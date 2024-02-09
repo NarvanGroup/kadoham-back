@@ -103,6 +103,6 @@ class SSOController extends Controller
 
     public function update(Request $request): array
     {
-        return Http::acceptJson()->withToken(request()->bearerToken())->put(env('SSO_URL').'/api/v1/users/profile', $request->all());
+        return Http::acceptJson()->withToken(request()->bearerToken())->put(env('SSO_URL').'/api/v1/users/profile', $request->all())->json();
     }
 }
