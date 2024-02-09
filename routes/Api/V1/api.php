@@ -21,6 +21,7 @@ Route::controller(SSOController::class)->group(static function () {
     Route::post('loginPassword', 'loginPassword');
     Route::post('resetPassword', 'resetPassword');
     Route::post('profile', 'profile');
+    Route::put('profile', 'update');
     Route::post('logout', 'logout');
     Route::post('sendOtp', [SSOController::class, 'sendOtp'])->middleware(['throttle:otp']);
 });
