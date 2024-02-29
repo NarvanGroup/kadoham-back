@@ -8,6 +8,7 @@ use Http;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\array;
 use Illuminate\Http\Request;
+use App\Models\WishList;
 
 
 class SSOController extends Controller
@@ -50,9 +51,8 @@ class SSOController extends Controller
             'mobile' => $request->mobile,
             'password'    => $request->password
         ]);
-
         if (($response->ok() && $response->json(['success']) === true)) {
-            Cache::put('1', $response->json('data'));
+	        Cache::put($response->json('data.token'), $response->json('data'), now()->addWeek());
         }
 
         return $response->json();
@@ -98,7 +98,9 @@ class SSOController extends Controller
      */
     public function profile(): array
     {
-        return $this->sendRequest('/api/v1/users/profile')->json();
+        $profile = $this->sendRequest('/api/v1/users/profile')->json();
+	    $profile['data']['wishlists'] = WishList::where('user_id',$profile['data']['mobile'])->get();
+		return $profile;
     }
 
     public function update(Request $request): array

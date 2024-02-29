@@ -4,8 +4,10 @@ namespace App\Http\Middleware\V1;
 
 use App\Traits\Api\V1\ResponderTrait;
 use Closure;
+use Http;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class CacheAuth
@@ -19,7 +21,10 @@ class CacheAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Cache::has($request->bearerToken())) {
+	    $response = Http::acceptJson()->withToken(request()->bearerToken())->get(env('SSO_URL').'/api/v1/users/profile');
+
+		if ($response->ok() && $response->json('mobile') !== null) {
+			$request->merge(['user' => $response['mobile']]);
             return $next($request);
         }
 
