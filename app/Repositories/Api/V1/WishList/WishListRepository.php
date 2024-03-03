@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Api\V1\WishList;
 
-use App\Models\WishList;
+use App\Models\Api\V1\WishList;
 use App\Repositories\Api\V1\Repository;
 
 class WishListRepository extends Repository implements WishListRepositoryInterface

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api\V1\WishLists;
 
+use App\Models\Api\V1\WishList;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -23,8 +24,7 @@ class StoreWishListRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'string', 'exists:sso.users,mobile'],
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255',Rule::unique('wish_lists')->where('user_id',auth()->user()->id)],
             'description' => ['nullable', 'string','max:4096'],
         ];
     }

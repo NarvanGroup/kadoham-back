@@ -2,10 +2,12 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\PreventMultipleLogins;
 use App\Http\Middleware\RoleCheck;
-use App\Http\Middleware\V1\CacheAuth;
-use App\Http\Middleware\V1\SessionAuth;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
+use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -67,7 +69,10 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'cache_auth' => CacheAuth::class,
+        'role' => RoleMiddleware::class,
+        'permission' => PermissionMiddleware::class,
+        'role_or_permission' => RoleOrPermissionMiddleware::class,
         'role.check' => RoleCheck::class,
+        'prevent.multiple.logins' => PreventMultipleLogins::class,
     ];
 }

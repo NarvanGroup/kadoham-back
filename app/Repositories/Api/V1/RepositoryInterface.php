@@ -17,10 +17,10 @@ interface RepositoryInterface
     /**
      * Returns specific user by given id
      *
-     * @param  int  $id
+     * @param  string  $id
      * @return null|Model
      */
-    public function find(int $id): Model|null;
+    public function find(string $id): Model|null;
 
     /**
      * Creates a new instance of user with given data
@@ -34,16 +34,16 @@ interface RepositoryInterface
      * Updates a given user with given data
      *
      * @param  array  $data
-     * @param  int    $id
+     * @param  string  $id
      * @return bool
      */
-    public function update(array $data, int $id): bool;
+    public function update(array $data, string $id): bool;
 
     /**
      * Delete given user instance
      *
-     * @param  int  $id
+     * @param  string  $id
      * @return bool
      */
-    public function delete(int $id): bool;
+    public function delete(string $id): bool;
 }

@@ -99,7 +99,7 @@ trait ResponderTrait
      * @param int $status
      * @return JsonResponse
      */
-    public function responseDestroyed(string|null $message = null, int $status = 204): JsonResponse
+    public function responseDestroyed(?string $message = null, int $status = 204): JsonResponse
     {
         if ($message === null) {
             $message = trans('response.deleted');
@@ -117,7 +117,7 @@ trait ResponderTrait
      * @param int $status
      * @return JsonResponse
      */
-    public function responseForbidden(string|null $message = null, int $status = 403): JsonResponse
+    public function responseForbidden(?string $message = null, int $status = 403): JsonResponse
     {
         if ($message === null) {
             $message = trans('response.forbidden');
@@ -134,7 +134,7 @@ trait ResponderTrait
      * @param int $status
      * @return JsonResponse
      */
-    public function responseUnauthorized(string|null $message = null, int $status = 401): JsonResponse
+    public function responseUnauthorized(?string $message = null, int $status = 401): JsonResponse
     {
         if ($message === null) {
             $message = trans('response.unauthorized');
@@ -151,7 +151,7 @@ trait ResponderTrait
      * @param int $status
      * @return JsonResponse
      */
-    public function responseSuccessful(string|null $message = null, int $status = 200): JsonResponse
+    public function responseSuccessful(?string $message = null, int $status = 200): JsonResponse
     {
         if ($message === null) {
             $message = trans('response.successful');
@@ -168,7 +168,7 @@ trait ResponderTrait
      * @param int $status
      * @return JsonResponse
      */
-    public function responseFailure(string|null $message = null, int $status = 400): JsonResponse
+    public function responseFailure(?string $message = null, int $status = 400): JsonResponse
     {
         if ($message === null) {
             $message = trans('response.failure');
@@ -180,7 +180,7 @@ trait ResponderTrait
         ], $status);
     }
 
-    public function responseNotFound(string|null $message = null, int $status = 404): JsonResponse
+    public function responseNotFound(?string $message = null, int $status = 404): JsonResponse
     {
         if ($message === null) {
             $message = trans('response.not_found');
@@ -192,7 +192,7 @@ trait ResponderTrait
         ], $status);
     }
 
-    public function responseValidationError(string|null $message = null, int $status = 422): JsonResponse
+    public function responseValidationError(?string $message = null, int $status = 422): JsonResponse
     {
         if ($message === null) {
             $message = trans('response.validation_error');

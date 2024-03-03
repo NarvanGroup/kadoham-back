@@ -25,7 +25,8 @@ class ItemResource extends JsonResource
             'rate'         => $this->rate,
             'where_to_buy' => $this->where_to_buy,
             'description'  => $this->description,
-            'wish_list'   => WishListResource::make($this->whenLoaded('wishList')),
+            'visibility'   => $this->visibility,
+            'wish_list'    => WishListResource::make($this->whenLoaded('wishList')),
         ];
     }
 }

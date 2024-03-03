@@ -21,8 +21,10 @@ return new class extends Migration
             $table->string('where_to_buy')->nullable();
             $table->unsignedInteger('rate')->nullable();
             $table->longText('description')->nullable();
+            $table->enum('visibility',['public','protected','private'])->default('public');
             $table->foreignUuid('wish_list_id')->constrained('wish_lists');
             $table->string('user_id')->index();
+            $table->unique(['name','wish_list_id', 'user_id']);
             $table->timestamps();
         });
     }

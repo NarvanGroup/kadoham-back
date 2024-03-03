@@ -2,19 +2,11 @@
 
 namespace App\Policies\Api\V1;
 
-use App\Models\User;
-use Cache;
+use App\Models\Api\V1\User;
 use Illuminate\Database\Eloquent\Model;
 
 class ResourcePolicy
 {
-
-    private mixed $user;
-
-    public function __construct()
-    {
-        $this->user = Cache::get(request()->bearerToken())['user'];
-    }
 
     /**
      * Perform pre-authorization checks.
@@ -37,7 +29,7 @@ class ResourcePolicy
      */
     public function show(User|null $user, Model $resource)
     {
-        return $this->user['mobile'] === $resource->user_id;
+        return $user->id === $resource->user_id;
     }
 
     /**
@@ -49,7 +41,7 @@ class ResourcePolicy
      */
     public function update(User|null $user, Model $resource)
     {
-        return $this->user['mobile'] === $resource->user_id;
+        return $user->id === $resource->user_id;
     }
 
     /**
@@ -61,6 +53,6 @@ class ResourcePolicy
      */
     public function destroy(User|null $user, Model $resource)
     {
-        return $this->user['mobile'] === $resource->user_id;
+        return $user->id === $resource->user_id;
     }
 }
