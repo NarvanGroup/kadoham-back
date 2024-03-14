@@ -28,7 +28,7 @@ class WishListResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             //'user_id' => $this->user_id,
-            //'items' => ItemResource::collection($this->whenLoaded('items')),
+            'items' => ItemResource::collection($this->whenLoaded('items')),
             'visibility' => $this->visibility,
             'items_count' => $totalItems,
             'progress' => round($progress)
