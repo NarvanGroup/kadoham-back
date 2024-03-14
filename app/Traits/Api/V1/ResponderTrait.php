@@ -99,7 +99,7 @@ trait ResponderTrait
      * @param int $status
      * @return JsonResponse
      */
-    public function responseDestroyed(?string $message = null, int $status = 204): JsonResponse
+    public function responseDestroyed(?string $message = null, int $status = 200): JsonResponse
     {
         if ($message === null) {
             $message = trans('response.deleted');

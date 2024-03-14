@@ -19,7 +19,7 @@ class WishListController extends Controller
 
     public function index(): JsonResponse
     {
-        return $this->responseIndex(WishListResource::collection(auth()->user()->wishList()->with('items')->get()));
+        return $this->responseIndex(WishListResource::collection(auth()->user()->wishList()->get()));
     }
 
     public function store(StoreWishListRequest $request): JsonResponse

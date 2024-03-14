@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Api\V1\WishLists;
 
-use App\Models\Api\V1\WishList;
+use App\Enums\WishlistStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -23,9 +23,21 @@ class StoreWishListRequest extends FormRequest
      */
     public function rules(): array
     {
+        $ignoreName = null;
+
+        if ($this->isMethod('PUT')) {
+            $ignoreName = $this->name;
+        }
+
         return [
-            'name' => ['required', 'string', 'max:255',Rule::unique('wish_lists')->where('user_id',auth()->user()->id)],
-            'description' => ['nullable', 'string','max:4096'],
+            'name'        => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('wish_lists')->where('user_id', auth()->user()->id)->ignore($ignoreName, 'name')
+            ],
+            'description' => ['nullable', 'string', 'max:4096'],
+            'status'      => ['nullable', 'string', Rule::in(WishlistStatusEnum::cases())],
         ];
     }
 }
