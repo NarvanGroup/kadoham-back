@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name')->index();
             $table->longText('description')->nullable();
             $table->enum('visibility',['public','protected','private'])->default('public')->index();
-            $table->enum('status',['open', 'closed'])->default('open')->index();
+            $table->enum('status',['pending', 'completed'])->default('pending')->index();
             $table->unique(['name', 'user_id']);
             $table->timestamps();
         });
