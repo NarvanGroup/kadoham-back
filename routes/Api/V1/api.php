@@ -3,10 +3,14 @@
 use App\Http\Controllers\Api\V1\AddressController;
 use App\Http\Controllers\Api\V1\AuthenticationController;
 use App\Http\Controllers\Api\V1\CardController;
+use App\Http\Controllers\Api\V1\FilterController;
 use App\Http\Controllers\Api\V1\ItemController;
 use App\Http\Controllers\Api\V1\SocialMediaController;
+use App\Http\Controllers\Api\V1\ThankYouNoteController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\UserWishController;
 use App\Http\Controllers\Api\V1\WishListController;
+use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -20,6 +24,10 @@ use Symfony\Component\DomCrawler\Crawler;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::get('test3', function (){
+    dd(\App\Models\Api\V1\Filter::all());
+});
 
 Route::get('test2', function (){
 
@@ -61,7 +69,11 @@ Route::middleware(['auth:sanctum', 'role.check'])->group(static function () {
         Route::post('logout', 'logout');
         Route::post('resetPassword', 'resetPassword');
     });
+
+    Route::post('/users/interests', [UserController::class, 'syncInterests']);
     Route::apiResource('users', UserController::class);
+
+
 
     //Users route resources
     Route::controller(AddressController::class)->prefix('addresses')->group(static function () {
@@ -76,5 +88,16 @@ Route::middleware(['auth:sanctum', 'role.check'])->group(static function () {
     Route::apiResource('cards', CardController::class);
 
     Route::apiResource('wish-lists', WishListController::class);
+    Route::post('/wish-lists/share/{wish_list}', [WishListController::class, 'storeShare']);
+    Route::delete('/wish-lists/share/{wish_list}', [WishListController::class, 'destroyShare']);
+    Route::post('/items/purchase', [ItemController::class, 'purchaseItem']);
+    Route::delete('/items/purchase', [ItemController::class, 'cancelPurchaseItem']);
     Route::apiResource('items', ItemController::class);
+    Route::post('/items/purchase', [ItemController::class, 'purchaseItem']);
+    Route::delete('/items/purchase', [ItemController::class, 'cancelPurchaseItem']);
+    Route::apiResource('filters', FilterController::class);
+    Route::apiResource('thank-you-notes', ThankYouNoteController::class);
+
 });
+
+Route::get('/wish-lists/wishes/{share}', [WishListController::class, 'showShare']);

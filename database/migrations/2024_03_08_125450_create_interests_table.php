@@ -16,14 +16,14 @@ return new class extends Migration
             $table->string('upper_body_size')->nullable();
             $table->string('lower_body_size')->nullable();
             $table->string('shoe_size')->nullable();
-            $table->string('favorite_color')->nullable();
-            $table->string('favorite_food')->nullable();
+            $table->json('favorite_color')->nullable();
+            $table->json('favorite_food')->nullable();
             $table->string('interests')->nullable();
             $table->string('personality')->nullable();
-            $table->string('fashion_style')->nullable();
-            $table->string('gift_type')->nullable();
+            $table->json('fashion_style')->nullable();
+            $table->json('gift_type')->nullable();
             $table->longText('description')->nullable();
-            $table->foreignUuid('user_id');
+            $table->foreignUuid('user_id')->index();
             $table->timestamps();
         });
     }

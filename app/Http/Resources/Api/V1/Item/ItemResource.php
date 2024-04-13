@@ -27,7 +27,7 @@ class ItemResource extends JsonResource
             'description'  => $this->description,
             'visibility'   => $this->visibility,
             'status'   => $this->status,
-            'wish_list'    => WishListResource::make($this->whenLoaded('wishList')),
+            'wish_lists'    => WishListResource::make($this->whenLoaded('wishLists')),
         ];
     }
 }

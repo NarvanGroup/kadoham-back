@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\User\ResetPasswordRequest;
+use App\Http\Requests\Api\V1\User\StoreInterestRequest;
 use App\Http\Requests\Api\V1\User\UpdateProfileRequest;
+use App\Http\Resources\Api\V1\Filter\FilterResource;
 use App\Http\Resources\Api\V1\User\UserResource;
+use App\Models\Api\V1\Filter;
 use App\Models\Api\V1\User;
 use App\Repositories\Api\V1\User\UserRepository;
 use App\Services\Api\V1\BankService;
@@ -74,5 +77,17 @@ class UserController extends Controller
     public function forgotPassword(): JsonResponse
     {
         return $this->response(new UserResource(auth()->user()->load('addresses', 'cards', 'wallets')));
+    }
+
+    public function publicProfile(string $username): JsonResponse
+    {
+        $user = User::where('username',$username)->firstOrFail();
+        return $this->response(new UserResource($user->load('wishLists.items')));
+    }
+
+    public function syncInterests(StoreInterestRequest $request): JsonResponse {
+        $user = auth()->user();
+        $user->interests()->updateOrCreate(['user_id' => $user->id], $request->validated());
+        return $this->response(new UserResource($user->load('interests')));
     }
 }

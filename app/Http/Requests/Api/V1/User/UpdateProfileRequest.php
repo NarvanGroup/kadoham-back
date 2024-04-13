@@ -43,6 +43,13 @@ class UpdateProfileRequest extends FormRequest
                 'string',
                 'max:255',
             ],
+            'username' => [
+                'nullable',
+                'string',
+                'alpha_num',
+                'max:255',
+                Rule::unique('users')->ignore($user->id),
+            ],
             'gender' => [
                 'nullable',
                 Rule::in(GendersEnum::cases()),

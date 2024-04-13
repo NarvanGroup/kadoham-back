@@ -7,6 +7,7 @@ use App\Models\Api\V1\Address;
 use App\Models\Api\V1\Card;
 use App\Models\Api\V1\Item;
 use App\Models\Api\V1\SocialMedia;
+use App\Models\Api\V1\ThankYouNote;
 use App\Models\Api\V1\User;
 use App\Models\Api\V1\WishList;
 use App\Policies\Api\V1\ResourcePolicy;
@@ -28,6 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         User::class => ResourcePolicy::class,
         WishList::class => ResourcePolicy::class,
         Item::class => ResourcePolicy::class,
+        ThankYouNote::class => ResourcePolicy::class,
     ];
 
     /**

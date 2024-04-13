@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('first_name', 255)->nullable();
             $table->string('last_name', 255)->nullable();
             $table->string('father_name', 255)->nullable();
+            $table->string('username', 255)->nullable()->unique();
             $table->string('nid', 10)->unique()->nullable();
             $table->date('dob')->nullable();
             $table->enum('gender', ['male', 'female', 'gay', 'lesbian'])->nullable();

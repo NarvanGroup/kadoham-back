@@ -44,6 +44,7 @@ class User extends Authenticatable implements Wallet, WalletFloat
         'first_name',
         'last_name',
         'father_name',
+        'username',
         'email',
         'mobile',
         'gender',
@@ -107,7 +108,7 @@ class User extends Authenticatable implements Wallet, WalletFloat
     /**
      * @return HasMany
      */
-    public function wishList(): HasMany
+    public function wishLists(): HasMany
     {
         return $this->hasMany(WishList::class);
     }
@@ -115,7 +116,7 @@ class User extends Authenticatable implements Wallet, WalletFloat
     /**
      * @return HasOne
      */
-    public function interest(): HasOne
+    public function interests(): HasOne
     {
         return $this->hasOne(Interest::class);
     }
@@ -123,9 +124,25 @@ class User extends Authenticatable implements Wallet, WalletFloat
     /**
      * @return HasMany
      */
-    public function item(): HasMany
+    public function items(): HasMany
     {
         return $this->hasMany(Item::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function thankYouNotes(): HasMany
+    {
+        return $this->hasMany(ThankYouNote::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function itemBuyer(): HasMany
+    {
+        return $this->hasMany(ItemBuyer::class);
     }
 
     /**

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Api\V1\Items;
+namespace App\Http\Requests\Api\V1\Filters;
 
 use App\Enums\ItemStatusEnum;
 use App\Enums\VisibilityEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreItemRequest extends FormRequest
+class StoreFilterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
