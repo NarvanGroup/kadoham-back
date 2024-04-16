@@ -28,7 +28,7 @@ class StoreInterestRequest extends FormRequest
             'shoe_size'       => 'nullable|string',
             'favorite_color'  => 'nullable|array',
             'favorite_food'   => 'nullable|array',
-            'interests'       => 'nullable|string',
+            'interests'       => 'nullable|array',
             'personality'     => 'nullable|string',
             'fashion_style'   => 'nullable|array',
             'gift_type'       => 'nullable|array',

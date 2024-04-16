@@ -13,6 +13,7 @@ class Interest extends Model
     protected $guarded = [];
 
     protected $casts = [
+        'interests' => 'json',
         'favorite_color' => 'json',
         'favorite_food' => 'json',
         'fashion_style' => 'json',

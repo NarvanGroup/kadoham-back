@@ -157,6 +157,72 @@ class FilterTableSeeder extends Seeder
                     ]
                 ]
             ],
+            [
+                "name"    => 'Interests',
+                "options" => [
+                    "columns" => ["EN", "FA"],
+                    "rows"    => [
+                        ['Sports', 'ورزش'],
+                        ['Travel', 'سفر و تجربه'],
+                        ['Fashion', 'لباس و فشن'],
+                        ['Cooking', 'غذا، آشپزی و رستوران'],
+                        ['Drinks', 'نوشیدنی'],
+                        ['Reading', 'کتاب و مطالعه'],
+                        ['Technology', 'تکنولوژی'],
+                        ['Arts and design', 'هنر و طراحی'],
+                        ['Music', 'موسیقی'],
+                        ['Gaming', 'بازی ویدیویی'],
+                        ['Photography', 'عکاسی'],
+                        ['Film and tv', 'فیلم و سریال'],
+                        ['Outdoor activities', 'طبیعت گردی و کوه نوردی'],
+                        ['Health and fitness', 'سلامت و تناسب اندام'],
+                        ['Pets', 'حیوانات خانگی'],
+                        ['Gardening', 'گل و گیاه'],
+                        ['DIY', 'کارهای دستی'],
+                        ['Personal growth', 'رشد فردی'],
+                        ['Podcasts', 'پادکست'],
+                        ['Beauty and skin care', 'مراقبت های آرایشی و بهداشتی'],
+                        ['Science and education', 'علم و یادگیری'],
+                        ['Other', 'نمیدانم'],
+                        ['Board games', 'بورد گیم'],
+                        ['Cleaning', 'تمیزکاری'],
+                        ['Sleeping', 'خواب و استراحت'],
+                        ['Social Media', 'شبکه های مجازی'],
+                        ['Family time', 'وقت گذرانی با خانواده'],
+                        ['Working', 'کار'],
+                        ['Praying and meditation', 'دعا و مراقبه'],
+                        ['Party', 'مهمونی و دورهمی']
+                    ]
+                ]
+            ],
+            [
+                "name"    => 'Fashion style',
+                "options" => [
+                    "columns" => ["EN", "FA"],
+                    "rows"    => [
+                        ['Glamorous', 'شیک و مجلسی'],
+                        ['Sporty', 'اسپرت'],
+                        ['Professional', 'رسمی'],
+                        ['Gothic', 'گات'],
+                        ['Casual', 'راحت و روزمره'],
+                        ['Trendy', 'مطابق مد روز'],
+                        ['Don\'t care', 'سایر']
+                    ]
+                ]
+            ],
+            [
+                "name"    => 'Gift type',
+                "options" => [
+                    "columns" => ["EN", "FA"],
+                    "rows"    => [
+                        ['Experience', 'سفر و تجربه'],
+                        ['Products', 'لوازم'],
+                        ['Cash', 'پول نقدی'],
+                        ['Vouchers', 'کارت هدیه'],
+                        ['DIY', 'کارهای دستی']
+                    ]
+                ]
+            ],
         ];
 
         foreach ($seeds as $seed) {

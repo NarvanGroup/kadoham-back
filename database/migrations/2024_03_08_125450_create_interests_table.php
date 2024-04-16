@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('shoe_size')->nullable();
             $table->json('favorite_color')->nullable();
             $table->json('favorite_food')->nullable();
-            $table->string('interests')->nullable();
+            $table->json('interests')->nullable();
             $table->string('personality')->nullable();
             $table->json('fashion_style')->nullable();
             $table->json('gift_type')->nullable();
