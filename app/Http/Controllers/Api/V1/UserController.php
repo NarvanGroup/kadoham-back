@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\User\ResetPasswordRequest;
-use App\Http\Requests\Api\V1\User\StoreInterestRequest;
+use App\Http\Requests\Api\V1\User\SyncInterestRequest;
 use App\Http\Requests\Api\V1\User\UpdateProfileRequest;
 use App\Http\Resources\Api\V1\User\UserResource;
 use App\Models\Api\V1\User;
@@ -82,7 +82,7 @@ class UserController extends Controller
         return $this->response(new UserResource($user->load('wishLists.items')));
     }
 
-    public function syncInterests(StoreInterestRequest $request): JsonResponse
+    public function syncInterests(SyncInterestRequest $request): JsonResponse
     {
         $user = auth()->user();
         $user->interests()->updateOrCreate(['user_id' => $user->id], $request->validated());

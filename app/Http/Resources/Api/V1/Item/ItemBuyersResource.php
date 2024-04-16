@@ -15,9 +15,10 @@ class ItemBuyersResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'buyers'    => $this->buyers,
-            'is_public' => $this->price,
-            'content'   => $this->quantity
+            'is_self_completed' => auth()->user()->id === $this->user_id,
+            'buyers'            => $this->buyers,
+            'is_public'         => $this->is_public,
+            'content'           => $this->content
         ];
     }
 }
