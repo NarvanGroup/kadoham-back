@@ -29,7 +29,7 @@ class ItemController extends Controller
     public function show(Item $item): JsonResponse
     {
         $this->authorize('show', $item);
-        return $this->responseShow($item->load('wishList'));
+        return $this->responseShow($item->load('wishList', 'buyers'));
     }
 
     public function update(StoreItemRequest $request, Item $item): JsonResponse
