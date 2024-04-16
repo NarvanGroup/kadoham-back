@@ -21,6 +21,7 @@ class ItemBuyer extends Model
 
     protected $casts = [
         'buyers' => 'json',
+        'is_public' => 'boolean'
     ];
 
     /**
