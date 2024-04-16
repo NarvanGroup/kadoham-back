@@ -6,9 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\User\ResetPasswordRequest;
 use App\Http\Requests\Api\V1\User\StoreInterestRequest;
 use App\Http\Requests\Api\V1\User\UpdateProfileRequest;
-use App\Http\Resources\Api\V1\Filter\FilterResource;
 use App\Http\Resources\Api\V1\User\UserResource;
-use App\Models\Api\V1\Filter;
 use App\Models\Api\V1\User;
 use App\Repositories\Api\V1\User\UserRepository;
 use App\Services\Api\V1\BankService;
@@ -17,16 +15,15 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\BrowserKit\Client;
-use Symfony\Component\DomCrawler\Crawler;
+
 class UserController extends Controller
 {
     use ResponderTrait;
 
     public function __construct(
         private readonly UserRepository $userRepository,
-        private readonly BankService    $bankService,
-    )
-    {
+        private readonly BankService $bankService,
+    ) {
     }
 
     public function index(): JsonResponse
@@ -59,7 +56,7 @@ class UserController extends Controller
 
     public function profile(): JsonResponse
     {
-        return $this->response(new UserResource(auth()->user()->load('addresses', 'cards', 'wallets','socialMedia')));
+        return $this->response(new UserResource(auth()->user()->load('interests', 'addresses', 'cards', 'wallets', 'socialMedia')));
     }
 
     public function logout(): JsonResponse
@@ -81,11 +78,12 @@ class UserController extends Controller
 
     public function publicProfile(string $username): JsonResponse
     {
-        $user = User::where('username',$username)->firstOrFail();
+        $user = User::where('username', $username)->firstOrFail();
         return $this->response(new UserResource($user->load('wishLists.items')));
     }
 
-    public function syncInterests(StoreInterestRequest $request): JsonResponse {
+    public function syncInterests(StoreInterestRequest $request): JsonResponse
+    {
         $user = auth()->user();
         $user->interests()->updateOrCreate(['user_id' => $user->id], $request->validated());
         return $this->response(new UserResource($user->load('interests')));
