@@ -5,7 +5,7 @@ namespace App\Http\Requests\Api\V1\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreInterestRequest extends FormRequest
+class SyncInterestRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,6 +21,7 @@ class StoreInterestRequest extends FormRequest
      * @return array<string, Rule|array|string>
      */
     public function rules(): array
+
     {
         return [
             'upper_body_size' => 'nullable|string',
