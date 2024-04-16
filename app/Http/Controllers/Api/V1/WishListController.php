@@ -28,7 +28,7 @@ class WishListController extends Controller
     public function show(WishList $wishList): JsonResponse
     {
         $this->authorize('show', $wishList);
-        return $this->responseShow(new WishListResource($wishList->load('items')));
+        return $this->responseShow(new WishListResource($wishList->load('items.buyers')));
     }
 
     public function update(StoreWishListRequest $request, WishList $wishList): JsonResponse
