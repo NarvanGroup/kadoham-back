@@ -18,22 +18,16 @@ class WishListResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $totalItems = $this->items()->count();
-        $completedItems = $this->items()->whereIn('status', ['reserved', 'completed'])->count();
-
-        $progress = $totalItems > 0 ? ($completedItems / $totalItems) * 100 : 0;
-
         return [
-            'id' => $this->id,
-            'name' => $this->name,
+            'id'          => $this->id,
+            'name'        => $this->name,
             'description' => $this->description,
-            'share' => $this->share,
-            //'user_id' => $this->user_id,
-            'items' => ItemResource::collection($this->whenLoaded('items')),
-            'visibility' => $this->visibility,
-            'items_count' => $totalItems,
-            'status' => $this->status,
-            'progress' => round($progress)
+            'share'       => $this->share,
+            'items'       => ItemResource::collection($this->whenLoaded('items')),
+            'visibility'  => $this->visibility,
+            'items_count' => $this->itemsCount,
+            'status'      => $this->status,
+            'progress'    => $this->progress
         ];
     }
 }

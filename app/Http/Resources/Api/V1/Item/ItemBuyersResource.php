@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api\V1\Item;
 
+use App\Http\Resources\Api\V1\User\UserSharedWishlistResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,7 +16,8 @@ class ItemBuyersResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'is_self_completed' => auth()->user()->id === $this->user_id,
+            'is_self_completed' => $this->user_id === $this->item->user_id,
+            'buyer'             => $this->is_public ? UserSharedWishlistResource::make($this->user) : 'private',
             'buyers'            => $this->buyers,
             'is_public'         => $this->is_public,
             'content'           => $this->content

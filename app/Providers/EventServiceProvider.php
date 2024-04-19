@@ -29,8 +29,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        User::observe(UserObserver::class);
-        Authentication::observe(AuthenticationObserver::class);
+/*        User::observe(UserObserver::class);
+        Authentication::observe(AuthenticationObserver::class);*/
     }
 
     /**

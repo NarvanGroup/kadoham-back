@@ -16,19 +16,19 @@ class ItemResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'           => $this->id,
-            'name'         => $this->name,
-            'price'        => $this->price,
-            'quantity'     => $this->quantity,
-            'link'         => $this->link,
-            'image'        => $this->image,
-            'rate'         => $this->rate,
-            'where_to_buy' => $this->where_to_buy,
-            'description'  => $this->description,
-            'visibility'   => $this->visibility,
-            'status'   => $this->status,
-            'wish_lists'    => WishListResource::make($this->whenLoaded('wishLists')),
-            'completer_info'    => ItemBuyersResource::make($this->whenLoaded('buyers')),
+            'id'             => $this->id,
+            'name'           => $this->name,
+            'price'          => $this->price,
+            'quantity'       => $this->quantity,
+            'link'           => $this->link,
+            'image'          => $this->image,
+            'rate'           => $this->rate,
+            'where_to_buy'   => $this->where_to_buy,
+            'description'    => $this->description,
+            'visibility'     => $this->visibility,
+            'status'         => $this->status,
+            'wish_lists'     => WishListResource::make($this->whenLoaded('wishList')),
+            'completer_info' => ItemBuyersResource::make($this->whenLoaded('buyer')),
         ];
     }
 }

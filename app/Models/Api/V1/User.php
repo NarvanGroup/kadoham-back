@@ -73,6 +73,7 @@ class User extends Authenticatable implements Wallet, WalletFloat
      * @var array<string, string>
      */
     protected $casts = [
+        'dob' => 'date',
         'email_verified_at' => 'datetime',
     ];
 

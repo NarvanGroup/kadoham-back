@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Helper\UniqueCodeGenerator;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\WishLists\StoreWishListRequest;
-use App\Http\Resources\Api\V1\User\UserResource;
+use App\Http\Resources\Api\V1\User\UserSharedWishlistResource;
 use App\Http\Resources\Api\V1\WishList\WishListResource;
 use App\Models\Api\V1\WishList;
 use App\Traits\Api\V1\ResponderTrait;
@@ -28,7 +28,7 @@ class WishListController extends Controller
     public function show(WishList $wishList): JsonResponse
     {
         $this->authorize('show', $wishList);
-        return $this->responseShow(new WishListResource($wishList->load('items.buyers')));
+        return $this->responseShow(new WishListResource($wishList->load('items.buyer')));
     }
 
     public function update(StoreWishListRequest $request, WishList $wishList): JsonResponse
@@ -58,9 +58,9 @@ class WishListController extends Controller
     public function showShare(string $share): JsonResponse
     {
         $wishList = WishList::where('share', $share)->firstOrFail();
-        return $this->response(new UserResource($wishList->user->load([
+        return $this->response(new UserSharedWishlistResource($wishList->user->load([
             'wishLists' => static function ($query) use ($share) {
-                $query->where('share', $share)->with('items.buyers');
+                $query->where('share', $share)->with('items.buyer');
             }
         ])));
     }
