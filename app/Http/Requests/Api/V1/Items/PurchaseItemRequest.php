@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api\V1\Items;
 
+use App\Enums\ItemStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,7 +28,7 @@ class PurchaseItemRequest extends FormRequest
                 'required',
                 Rule::unique('item_buyers', 'item_id'),
                 Rule::exists('items', 'id')->where(static function ($query) {
-                    $query->where('status', 'pending');
+                    $query->where('status', ItemStatusEnum::PENDING);
                 })
             ],
             'is_public' => ['nullable', 'bool'],
