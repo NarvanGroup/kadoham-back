@@ -43,6 +43,11 @@ class UpdateProfileRequest extends FormRequest
                 'string',
                 'max:255',
             ],
+            'dob' => [
+                'nullable',
+                'date',
+                'before:today'
+            ],
             'username' => [
                 'nullable',
                 'string',
