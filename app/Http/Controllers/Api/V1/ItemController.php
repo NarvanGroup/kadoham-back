@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Enums\ItemStatusEnum;
 use App\Enums\WishlistStatusEnum;
+use App\Helper\UploadHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Items\CancelPurchaseItemRequest;
 use App\Http\Requests\Api\V1\Items\PurchaseItemRequest;
@@ -26,7 +27,9 @@ class ItemController extends Controller
 
     public function store(StoreItemRequest $request): JsonResponse
     {
-        return $this->responseCreated(new ItemResource(auth()->user()->items()->create($request->validated())));
+        $data = $request->validated();
+        $data['image'] = UploadHelper::upload($request,'image','items');
+        return $this->responseCreated(new ItemResource(auth()->user()->items()->create($data)));
     }
 
     public function show(Item $item): JsonResponse
@@ -37,8 +40,10 @@ class ItemController extends Controller
 
     public function update(StoreItemRequest $request, Item $item): JsonResponse
     {
+        $data = $request->validated();
+        $data['image'] = UploadHelper::upload($request,'image','items');
         $this->authorize('update', $item);
-        $item->update($request->validated());
+        $item->update($data);
         return $this->responseUpdated(new ItemResource($item->fresh()));
     }
 

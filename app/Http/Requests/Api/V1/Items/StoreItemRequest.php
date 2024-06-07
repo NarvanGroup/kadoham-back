@@ -30,7 +30,7 @@ class StoreItemRequest extends FormRequest
             $ignoreName = $this->name;
         }
 
-        return [
+        $rules = [
             'name'         => [
                 'required',
                 'string',
@@ -42,7 +42,6 @@ class StoreItemRequest extends FormRequest
             'price'        => ['required', 'numeric', 'max_digits:20'],
             'link'         => ['nullable', 'string', 'max:2048'],
             'quantity'     => ['nullable', 'numeric', 'max_digits:3'],
-            'image'        => ['nullable', 'string', 'max:2048'],
             'where_to_buy' => ['nullable', 'string', 'max:255'],
             'rate'         => ['nullable', 'numeric', 'min:0', 'max:5'],
             'description'  => ['nullable', 'string', 'max:4096'],
@@ -50,5 +49,18 @@ class StoreItemRequest extends FormRequest
             'status'       => ['nullable', 'string', Rule::in(ItemStatusEnum::cases())],
             'wish_list_id' => ['required', 'string', Rule::exists('wish_lists', 'id'), Rule::in(auth()->user()->wishLists()->pluck('id'))],
         ];
+
+        if ($this->is_upload) {
+            $rules['image'] = [
+                'nullable',
+                'image',
+                'mimes:png,jpg,webp,gif',
+                'max:512'
+            ];
+        } else {
+            $rules['image'] = 'nullable|url';
+        }
+
+        return $rules;
     }
 }

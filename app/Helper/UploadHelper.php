@@ -16,7 +16,7 @@ class UploadHelper
      */
     public static function upload(Request $request, string $field = 'file', string $path = 'files'): ?string
     {
-        if (!$request->is_upload) {
+        if (Str::isUrl($request->$field)) {
             return $request->$field;
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api\V1\Item;
 
+use App\Helper\UploadHelper;
 use App\Http\Resources\Api\V1\WishList\WishListResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -21,7 +22,7 @@ class ItemResource extends JsonResource
             'price'          => $this->price,
             'quantity'       => $this->quantity,
             'link'           => $this->link,
-            'image'          => $this->image,
+            'image'          => UploadHelper::url($this->image),
             'rate'           => $this->rate,
             'where_to_buy'   => $this->where_to_buy,
             'description'    => $this->description,

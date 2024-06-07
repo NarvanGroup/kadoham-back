@@ -66,9 +66,6 @@ class UpdateProfileRequest extends FormRequest
                 'email',
                 'max:255',
                 Rule::unique('users')->ignore($user->id),
-            ],
-            'is_upload' => [
-                'nullable','bool'
             ]
         ];
 
