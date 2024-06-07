@@ -33,7 +33,7 @@ class PurchaseItemRequest extends FormRequest
             ],
             'is_public' => ['nullable', 'bool'],
             'buyers'    => ['nullable', 'array'],
-            'content'   => ['required', 'string', 'min:3', 'max:6144'],
+            'content'   => ['nullable', 'string', 'min:3', 'max:6144'],
         ];
     }
 }
