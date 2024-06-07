@@ -5,8 +5,8 @@ namespace App\Enums;
 enum ItemTypeEnum: string
 {
     case EXPERIENCE = 'Experience';
-    case PRODUCTS = 'Products';
+    case PRODUCT = 'Product';
     case CASH = 'Cash';
-    case VOUCHERS = 'Vouchers';
+    case CHARITY = 'Charity';
     case DIY = 'DIY';
 }

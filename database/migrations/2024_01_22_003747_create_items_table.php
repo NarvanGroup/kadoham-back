@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name')->index();
+            $table->enum('type',['product','cash','experience','diy','charity'])->default('product')->index();
             $table->unsignedDecimal('price',22,0);
             $table->string('link')->nullable();
             $table->unsignedBigInteger('quantity')->default(1);

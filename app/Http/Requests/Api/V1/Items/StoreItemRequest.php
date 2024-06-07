@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\V1\Items;
 
 use App\Enums\ItemStatusEnum;
+use App\Enums\ItemTypeEnum;
 use App\Enums\VisibilityEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -39,6 +40,7 @@ class StoreItemRequest extends FormRequest
                     ->where('wish_list_id', $this->wish_list_id)
                     ->ignore($ignoreName, 'name')
             ],
+            'type'         => ['nullable', 'string', Rule::in(ItemTypeEnum::cases())],
             'price'        => ['required', 'numeric', 'max_digits:20'],
             'link'         => ['nullable', 'string', 'max:2048'],
             'quantity'     => ['nullable', 'numeric', 'max_digits:3'],
