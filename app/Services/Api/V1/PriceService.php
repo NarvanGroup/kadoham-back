@@ -38,7 +38,7 @@ class PriceService extends Controller
                     return [
                         'name' => $response['data']['product']['title_fa'],
                         'description' => $response['data']['seo']['description'],
-                        'url' => 'https://www.digikala.com'.$response['data']['product']['url']['uri'],
+                        'url' => $this->url,
                         'price' => $response['data']['product']['default_variant']['price']['selling_price'],
                         'image' => $response['data']['product']['images']['main']['url'][0]
                     ];
@@ -74,14 +74,12 @@ class PriceService extends Controller
 
             $searchAttributes = ['name', 'description', 'url', 'price', 'lowPrice', 'highPrice', 'image'];
 
-            $product = $product->merge($offer)->only($searchAttributes)->map(static function ($value, $key) use (
-                    &
-                    $product
-                ) {
-                    return ($key === 'image' && is_array($value)) ? ($value[0]['url'] ?? $value[0]) : $value;
-                })->toArray();
+            $product = $product->merge($offer)
+                ->only($searchAttributes)
+                ->map(static fn($value, $key) => ($key === 'image' && is_array($value)) ? ($value[0]['url'] ?? $value[0]) : $value)->toArray();
 
             $product['price'] = isset($product['price']) && $product['price'] > 0 ? $product['price'] : $product['lowPrice'] ?? null;
+            $product['url'] = $this->url;
 
             return $product;
         } catch (Exception $e) {
@@ -114,6 +112,8 @@ class PriceService extends Controller
                     'product:price:amount', 'twitter:data1'
                 ]) ? $this->extractFirstInt($content) : ($product['price'] ?? '');
             }
+
+            $product['url'] = $this->url;
 
             return array_filter($product);
         } catch (Exception $e) {
