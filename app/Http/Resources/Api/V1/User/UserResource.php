@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api\V1\User;
 
+use App\Helper\UploadHelper;
 use App\Http\Resources\Api\V1\Address\AddressResource;
 use App\Http\Resources\Api\V1\Card\CardResource;
 use App\Http\Resources\Api\V1\Interest\InterestResource;
@@ -32,7 +33,7 @@ class UserResource extends JsonResource
             'dob' => $this->dob,
             'mobile' => $this->mobile,
             'email' => $this->email,
-            'image' => $this->image,
+            'image' => UploadHelper::url($this->image),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             //'authentication' => $this->authenticationStatus(),

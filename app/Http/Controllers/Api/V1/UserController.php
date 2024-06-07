@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Helper\UploadHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\User\ResetPasswordRequest;
 use App\Http\Requests\Api\V1\User\SyncInterestRequest;
@@ -43,9 +44,11 @@ class UserController extends Controller
 
     public function update(UpdateProfileRequest $request): JsonResponse
     {
+        $data = $request->validated();
         $user = auth()->user();
-        $this->userRepository->update($request->validated(), $user->id);
-        return $this->responseUpdated($user->fresh());
+        $data['image'] = UploadHelper::upload($request,'image','avatars');
+        $this->userRepository->update($data, $user->id);
+        return $this->responseUpdated(new UserResource($user->fresh()));
     }
 
     public function destroy(User $user): JsonResponse

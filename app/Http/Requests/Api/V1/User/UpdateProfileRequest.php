@@ -27,7 +27,8 @@ class UpdateProfileRequest extends FormRequest
     public function rules(): array
     {
         $user = auth()->user();
-        return [
+
+        $rules = [
             'first_name' => [
                 'nullable',
                 'string',
@@ -66,10 +67,22 @@ class UpdateProfileRequest extends FormRequest
                 'max:255',
                 Rule::unique('users')->ignore($user->id),
             ],
-            'image' => [
-                'nullable',
-                'string'
-            ],
+            'is_upload' => [
+                'nullable','bool'
+            ]
         ];
+
+        if ($this->is_upload) {
+            $rules['image'] = [
+                'nullable',
+                'image',
+                'mimes:png,jpg,webp,gif',
+                'max:512'
+            ];
+        } else {
+            $rules['image'] = 'nullable|url';
+        }
+
+        return $rules;
     }
 }
