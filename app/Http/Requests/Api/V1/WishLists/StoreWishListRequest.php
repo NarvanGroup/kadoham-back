@@ -29,7 +29,7 @@ class StoreWishListRequest extends FormRequest
             $ignoreName = $this->name;
         }
 
-        return [
+        $rules = [
             'name'        => [
                 'required',
                 'string',
@@ -39,5 +39,18 @@ class StoreWishListRequest extends FormRequest
             'description' => ['nullable', 'string', 'max:4096'],
             'status'      => ['nullable', 'string', Rule::in(WishlistStatusEnum::cases())],
         ];
+
+        if ($this->is_upload) {
+            $rules['image'] = [
+                'nullable',
+                'image',
+                'mimes:png,jpg,webp,gif',
+                'max:512'
+            ];
+        } else {
+            $rules['image'] = 'nullable|url';
+        }
+
+        return $rules;
     }
 }

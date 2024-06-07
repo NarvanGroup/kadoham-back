@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Helper\UniqueCodeGenerator;
+use App\Helper\UploadHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\WishLists\StoreWishListRequest;
 use App\Http\Resources\Api\V1\User\UserSharedWishlistResource;
@@ -22,7 +23,9 @@ class WishListController extends Controller
 
     public function store(StoreWishListRequest $request): JsonResponse
     {
-        return $this->responseCreated(new WishListResource(auth()->user()->wishLists()->create($request->validated())));
+        $data = $request->validated();
+        $data['image'] = UploadHelper::upload($request,'image','items');
+        return $this->responseCreated(new WishListResource(auth()->user()->wishLists()->create($data)));
     }
 
     public function show(WishList $wishList): JsonResponse
@@ -33,8 +36,10 @@ class WishListController extends Controller
 
     public function update(StoreWishListRequest $request, WishList $wishList): JsonResponse
     {
+        $data = $request->validated();
+        $data['image'] = UploadHelper::upload($request,'image','items');
         $this->authorize('update', $wishList);
-        $wishList->update($request->validated());
+        $wishList->update($data);
         return $this->responseUpdated($wishList->fresh());
     }
 

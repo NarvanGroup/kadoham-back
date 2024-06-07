@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api\V1\WishList;
 
+use App\Helper\UploadHelper;
 use App\Http\Resources\Api\V1\Item\ItemResource;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -22,6 +23,7 @@ class WishListResource extends JsonResource
             'id'          => $this->id,
             'name'        => $this->name,
             'description' => $this->description,
+            'image'       => UploadHelper::url($this->image),
             'share'       => $this->share,
             'items'       => ItemResource::collection($this->whenLoaded('items')),
             'visibility'  => $this->visibility,
