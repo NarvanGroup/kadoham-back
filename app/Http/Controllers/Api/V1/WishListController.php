@@ -59,6 +59,7 @@ class WishListController extends Controller
     {
         $wishList = WishList::where('share', $share)->firstOrFail();
         return $this->response(new UserSharedWishlistResource($wishList->user->load([
+            'interests',
             'wishLists' => static function ($query) use ($share) {
                 $query->where('share', $share)->with('items.buyer');
             }
