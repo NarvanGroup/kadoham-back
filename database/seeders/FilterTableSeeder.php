@@ -215,11 +215,11 @@ class FilterTableSeeder extends Seeder
                 "options" => [
                     "columns" => ["EN", "FA"],
                     "rows"    => [
+                        ['Product', 'کالا'],
                         ['Experience', 'سفر و تجربه'],
-                        ['Products', 'لوازم'],
                         ['Cash', 'پول نقدی'],
-                        ['Vouchers', 'کارت هدیه'],
-                        ['DIY', 'کارهای دستی']
+                        ['Charitable', 'خیریه'],
+                        ['DIY', 'خلاقانه']
                     ]
                 ]
             ],
