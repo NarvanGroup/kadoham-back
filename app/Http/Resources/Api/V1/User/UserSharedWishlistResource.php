@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api\V1\User;
 
+use App\Helper\UploadHelper;
 use App\Http\Resources\Api\V1\Address\AddressResource;
 use App\Http\Resources\Api\V1\Interest\InterestResource;
 use App\Http\Resources\Api\V1\Item\ItemResource;
@@ -25,7 +26,7 @@ class UserSharedWishlistResource extends JsonResource
             'username'     => $this->username,
             'gender'       => $this->gender,
             'dob'          => $this->dob,
-            'image'        => $this->image,
+            'image'        => UploadHelper::url($this->image),
             'addresses'    => AddressResource::collection($this->whenLoaded('addresses')),
             'interests'    => InterestResource::make($this->whenLoaded('interests')),
             'social_media' => SocialMediaResource::collection($this->whenLoaded('socialMedia')),
