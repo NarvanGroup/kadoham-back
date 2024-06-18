@@ -37,6 +37,7 @@ class StoreWishListRequest extends FormRequest
                 Rule::unique('wish_lists')->where('user_id', auth()->user()->id)->ignore($ignoreName, 'name')
             ],
             'description' => ['nullable', 'string', 'max:4096'],
+            'occasion_date' => ['nullable','date','after_or_equal:today'],
             'status'      => ['nullable', 'string', Rule::in(WishlistStatusEnum::cases())],
         ];
 

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->enum('visibility',['public','protected','private'])->default('public')->index();
             $table->enum('status',['pending', 'completed'])->default('pending')->index();
+            $table->date('occasion_date')->nullable();
             $table->unique(['name', 'user_id']);
             $table->timestamps();
         });
