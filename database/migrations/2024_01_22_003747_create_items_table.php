@@ -22,9 +22,15 @@ return new class extends Migration
             $table->string('where_to_buy')->nullable();
             $table->unsignedInteger('rate')->nullable();
             $table->longText('description')->nullable();
+            #Experiance
+            $table->json('category')->nullable();
+            #Cash
+            $table->unsignedDecimal('amount')->nullable();
+            #Charity
+            $table->json('charity')->nullable();
             $table->enum('visibility',['public','protected','private'])->default('public')->index();
             $table->enum('status',['pending','reserved','completed'])->default('pending')->index();
-            $table->foreignUuid('wish_list_id')->constrained('wish_lists');
+            $table->foreignUuid('wish_list_id')->constrained('wish_lists')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignUuid('user_id');
             $table->unique(['name','wish_list_id', 'user_id']);
             $table->timestamps();
