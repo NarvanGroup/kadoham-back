@@ -3,6 +3,7 @@
 namespace App\Models\Api\V1;
 
 use App\Enums\ItemStatusEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +14,22 @@ class WishList extends Model
     use HasFactory, HasUuids;
 
     protected $guarded = [];
+
+    /**
+     * Scope a query to only include popular users.
+     */
+    public function scopePublic(Builder $query): void
+    {
+        $query->where('visibility', 'public');
+    }
+
+    public function scopeSearch($query, $searchTerm)
+    {
+        return $query->public()->where(function ($query) use ($searchTerm) {
+            $query->where('name', 'like', "%{$searchTerm}%")
+                ->orWhere('description', 'like', "%{$searchTerm}%");
+        });
+    }
 
     protected function itemsCount(): Attribute
     {

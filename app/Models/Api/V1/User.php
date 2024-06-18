@@ -77,6 +77,17 @@ class User extends Authenticatable implements Wallet, WalletFloat
         'email_verified_at' => 'datetime',
     ];
 
+    public function scopeSearch($query, $searchTerm)
+    {
+        return $query->where(function ($query) use ($searchTerm) {
+            $query->where('first_name', 'like', "%{$searchTerm}%")
+                ->orWhere('last_name', 'like', "%{$searchTerm}%")
+                ->orWhere('username', 'like', "%{$searchTerm}%")
+                ->orWhere('email', 'like', "%{$searchTerm}%")
+                ->orWhere('mobile', 'like', "%{$searchTerm}%");
+        });
+    }
+
     /**
      * @return HasMany
      */

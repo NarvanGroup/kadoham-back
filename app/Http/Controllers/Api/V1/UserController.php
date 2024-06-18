@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Helper\UploadHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\User\ResetPasswordRequest;
+use App\Http\Requests\Api\V1\User\SearchRequest;
 use App\Http\Requests\Api\V1\User\SyncInterestRequest;
 use App\Http\Requests\Api\V1\User\UpdateProfileRequest;
 use App\Http\Resources\Api\V1\User\UserResource;
@@ -47,7 +48,7 @@ class UserController extends Controller
         $data = $request->validated();
         $user = auth()->user();
         $data['image'] = UploadHelper::upload($request,'image','avatars');
-        $this->userRepository->update($data, $user->id);
+        $user->update($data);
         return $this->responseUpdated(new UserResource($user->fresh()));
     }
 
@@ -90,5 +91,20 @@ class UserController extends Controller
         $user = auth()->user();
         $user->interests()->updateOrCreate(['user_id' => $user->id], $request->validated());
         return $this->response(new UserResource($user->load('interests')));
+    }
+
+    public function search(SearchRequest $request)
+    {
+        $search = $request->search;
+
+        $users = User::search($search)->orWhereHas('wishLists', function ($query) use ($search) {
+                $query->public()->search($search);
+            })
+            ->get()
+            ->load(['wishLists' => function ($query) {
+                $query->public();
+            }]);
+
+        return UserResource::collection($users);
     }
 }
