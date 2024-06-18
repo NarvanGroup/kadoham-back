@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('status',['pending', 'completed'])->default('pending')->index();
             $table->date('occasion_date')->nullable();
             $table->unique(['name', 'user_id']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -31,6 +32,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('wish_lists');
+        Schema::table('wish_lists', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
     }
 };

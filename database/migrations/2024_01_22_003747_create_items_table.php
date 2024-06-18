@@ -31,8 +31,9 @@ return new class extends Migration
             $table->enum('visibility',['public','protected','private'])->default('public')->index();
             $table->enum('status',['pending','reserved','completed'])->default('pending')->index();
             $table->foreignUuid('wish_list_id')->constrained('wish_lists')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignUuid('user_id');
+            $table->foreignUuid('user_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->unique(['name','wish_list_id', 'user_id']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -42,6 +43,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('items');
+        Schema::table('items', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
     }
 };
