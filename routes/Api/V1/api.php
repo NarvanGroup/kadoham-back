@@ -23,7 +23,6 @@ use App\Http\Controllers\Api\V1\WishListController;
 */
 
 Route::controller(AuthenticationController::class)->group(static function () {
-    Route::get('test', 'test');
     Route::post('loginOtp', 'loginOtp')->middleware(['prevent.multiple.logins']);
     Route::post('loginPassword', 'loginPassword')->middleware(['prevent.multiple.logins']);
     Route::post('userInquiry', 'userInquiry');
@@ -77,4 +76,6 @@ Route::middleware(['auth:sanctum', 'role.check'])->group(static function () {
 Route::get('/wish-lists/wishes/{share}', [WishListController::class, 'showShare']);
 
 Route::post('/getPrice', [PriceController::class, 'getPrice']);
+
+Route::get('search', [UserController::class, 'search']);
 
