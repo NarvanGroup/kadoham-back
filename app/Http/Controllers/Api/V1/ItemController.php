@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Enums\ItemStatusEnum;
 use App\Enums\WishlistStatusEnum;
+use App\Helper\PurchaseHelper;
 use App\Helper\UploadHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Items\CancelPurchaseItemRequest;
@@ -56,36 +57,13 @@ class ItemController extends Controller
 
     public function purchaseItem(PurchaseItemRequest $request): JsonResponse
     {
-        try {
-            DB::beginTransaction();
-            $itemBuyer = auth()->user()->itemBuyer()->create($request->validated());
-            $itemBuyer->item()->update(['status' => ItemStatusEnum::COMPLETED]);
-            if ($itemBuyer->item->wishList->progress === 100) {
-                $itemBuyer->item->wishList->update(['status' => WishlistStatusEnum::COMPLETED]);
-            }
-            DB::commit();
-            return $this->responseUpdated(new ItemResource($itemBuyer->item));
-        } catch (Exception) {
-            DB::rollback();
-            return $this->response('Something went wrong', 'Server error', 500);
-        }
+        $itemBuyer = PurchaseHelper::purchase($request);
+        return $this->responseUpdated(new ItemResource($itemBuyer->item));
     }
 
     public function cancelPurchaseItem(CancelPurchaseItemRequest $request): JsonResponse
     {
-        try {
-            DB::beginTransaction();
-            $itemBuyer = auth()->user()->itemBuyer()->where($request->validated())->first();
-            $itemBuyer->item()->update(['status' => ItemStatusEnum::PENDING]);
-            if ($itemBuyer->item->wishList->progress < 100) {
-                $itemBuyer->item->wishList->update(['status' => WishlistStatusEnum::PENDING]);
-            }
-            $itemBuyer->delete();
-            DB::commit();
-            return $this->responseUpdated(new ItemResource($itemBuyer->item));
-        } catch (Exception) {
-            DB::rollback();
-            return $this->response('Something went wrong', 'Server error', 500);
-        }
+        $itemBuyer = PurchaseHelper::cancelPurchase($request);
+        return $this->responseUpdated(new ItemResource($itemBuyer->item));
     }
 }
