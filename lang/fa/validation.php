@@ -217,7 +217,8 @@ return [
         'quantity' => 'تعداد',
         'amount' => 'مبلغ',
         'type' => 'نوع آیتم',
-        'item_id' => 'شماره آیتم'
+        'item_id' => 'شماره آیتم',
+        'visibility' => 'دسترسی'
     ],
 
 ];
