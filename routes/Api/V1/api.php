@@ -77,5 +77,5 @@ Route::get('/wish-lists/wishes/{share}', [WishListController::class, 'showShare'
 
 Route::post('/getPrice', [PriceController::class, 'getPrice']);
 
-Route::get('search', [UserController::class, 'search']);
+Route::post('search', [UserController::class, 'search']);
 
