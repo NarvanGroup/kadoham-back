@@ -28,7 +28,7 @@ class SearchRequest extends FormRequest
                 'required',
                 'min:3',
                 'max:255',
-                'alpha_dash:ascii'
+                'string'
             ]
         ];
     }
