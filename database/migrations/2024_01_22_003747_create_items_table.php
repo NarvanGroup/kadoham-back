@@ -15,17 +15,17 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name')->index();
             $table->enum('type',['product','cash','experience','diy','charity'])->default('product')->index();
-            $table->unsignedDecimal('price',22,0);
-            $table->string('link')->nullable();
+            $table->unsignedDecimal('price',11,0)->nullable();
+            $table->longText('link')->nullable();
             $table->unsignedBigInteger('quantity')->default(1);
-            $table->string('image')->nullable();
+            $table->string('image',4096)->nullable();
             $table->string('where_to_buy')->nullable();
             $table->unsignedInteger('rate')->nullable();
             $table->longText('description')->nullable();
             #Experiance
             $table->json('category')->nullable();
             #Cash
-            $table->unsignedDecimal('amount')->nullable();
+            $table->unsignedDecimal('amount', 11,0)->nullable();
             #Charity
             $table->json('charity')->nullable();
             $table->enum('visibility',['public','protected','private'])->default('public')->index();

@@ -32,7 +32,7 @@ class StoreItemRequest extends FormRequest
         }
 
         $rules = [
-            'name'         => [
+            'name' => [
                 'required',
                 'string',
                 'max:255',
@@ -40,19 +40,39 @@ class StoreItemRequest extends FormRequest
                     ->where('wish_list_id', $this->wish_list_id)
                     ->ignore($ignoreName, 'name')
             ],
-            'type'         => ['nullable', 'string', Rule::in(ItemTypeEnum::cases())],
-            'price'        => ['required', 'numeric', 'max_digits:20'],
-            'link'         => ['nullable', 'string', 'max:2048'],
-            'quantity'     => ['nullable', 'numeric', 'max_digits:3'],
+            'type' => ['required', 'string', Rule::in(ItemTypeEnum::cases())],
+            'price' => [
+                Rule::excludeIf($this->type !== ItemTypeEnum::PRODUCT->value),
+                'numeric',
+                'min:1000',
+                'max_digits:11'
+            ],
+            'link' => ['nullable', 'string', 'max:2048'],
+            'quantity' => [
+                Rule::excludeIf($this->type !== ItemTypeEnum::PRODUCT->value),
+                'numeric',
+                'min:1',
+                'max_digits:3'
+            ],
             'where_to_buy' => ['nullable', 'string', 'max:255'],
-            'rate'         => ['nullable', 'numeric', 'min:0', 'max:5'],
-            'description'  => ['nullable', 'string', 'max:4096'],
-            'category'     => ['nullable', 'json'],
-            'amount'       => ['nullable', 'numeric', 'min:1000'],
-            'charity'      => ['nullable', 'json'],
-            'visibility'   => ['nullable', 'string', Rule::in(VisibilityEnum::cases())],
-            'status'       => ['nullable', 'string', Rule::in(ItemStatusEnum::cases())],
-            'wish_list_id' => ['required', 'string', Rule::exists('wish_lists', 'id'), Rule::in(auth()->user()->wishLists()->pluck('id'))],
+            'rate' => ['nullable', 'numeric', 'min:0', 'max:5'],
+            'description' => ['nullable', 'string', 'max:4096'],
+            'category' => ['nullable', 'json'],
+            'amount' => [
+                Rule::excludeIf($this->type !== ItemTypeEnum::CHARITY->value && $this->type !== ItemTypeEnum::CASH->value),
+                'numeric',
+                'min:1000',
+                'max_digits:11'
+            ],
+            'charity' => ['nullable', 'json'],
+            'visibility' => ['nullable', 'string', Rule::in(VisibilityEnum::cases())],
+            'status' => ['nullable', 'string', Rule::in(ItemStatusEnum::cases())],
+            'wish_list_id' => [
+                'required',
+                'string',
+                Rule::exists('wish_lists', 'id'),
+                Rule::in(auth()->user()->wishLists()->pluck('id'))
+            ],
         ];
 
         if ($this->is_upload) {

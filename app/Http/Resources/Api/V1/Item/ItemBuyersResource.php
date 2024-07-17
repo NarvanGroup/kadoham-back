@@ -16,6 +16,7 @@ class ItemBuyersResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id'                => $this->id,
             'is_self_completed' => $this->user_id === $this->item->user_id,
             'buyer'             => $this->is_public ? UserSharedWishlistResource::make($this->user) : 'private',
             'buyers'            => $this->buyers,

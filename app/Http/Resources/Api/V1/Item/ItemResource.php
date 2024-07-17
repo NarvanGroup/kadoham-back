@@ -22,6 +22,9 @@ class ItemResource extends JsonResource
             'type'           => $this->type,
             'price'          => $this->price,
             'quantity'       => $this->quantity,
+            'amount'         => $this->amount,
+            'filled'         => $this->filled,
+            'remaining'      => $this->remaining,
             'link'           => $this->link,
             'image'          => UploadHelper::url($this->image),
             'rate'           => $this->rate,
@@ -30,7 +33,7 @@ class ItemResource extends JsonResource
             'visibility'     => $this->visibility,
             'status'         => $this->status,
             'wish_lists'     => WishListResource::make($this->whenLoaded('wishList')),
-            'completer_info' => ItemBuyersResource::make($this->whenLoaded('buyer')),
+            'completer_info' => ItemBuyersResource::collection($this->whenLoaded('buyers')),
         ];
     }
 }

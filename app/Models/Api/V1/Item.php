@@ -2,6 +2,8 @@
 
 namespace App\Models\Api\V1;
 
+use App\Enums\ItemTypeEnum;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,8 +19,22 @@ class Item extends Model
         return $this->belongsTo(WishList::class,'wish_list_id');
     }
 
-    public function buyer()
+    public function buyers()
     {
-        return $this->hasOne(ItemBuyer::class);
+        return $this->hasMany(ItemBuyer::class);
+    }
+
+    protected function filled(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->type === ItemTypeEnum::PRODUCT->value ? $this->buyers()->sum('quantity') : $this->buyers()->sum('amount')
+        );
+    }
+
+    protected function remaining(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->type === ItemTypeEnum::PRODUCT->value ? ($this->quantity - $this->filled) : ($this->amount - $this->filled)
+        );
     }
 }

@@ -38,7 +38,7 @@ class PriceService extends Controller
                     return [
                         'name' => $response['data']['product']['title_fa'],
                         'description' => $response['data']['seo']['description'],
-                        'url' => $this->url,
+                        'link' => $this->url,
                         'price' => $response['data']['product']['default_variant']['price']['selling_price'],
                         'image' => $response['data']['product']['images']['main']['url'][0]
                     ];
@@ -79,7 +79,7 @@ class PriceService extends Controller
                 ->map(static fn($value, $key) => ($key === 'image' && is_array($value)) ? ($value[0]['url'] ?? $value[0]) : $value)->toArray();
 
             $product['price'] = isset($product['price']) && $product['price'] > 0 ? $product['price'] : $product['lowPrice'] ?? null;
-            $product['url'] = $this->url;
+            $product['link'] = $this->url;
 
             return $product;
         } catch (Exception $e) {
@@ -105,7 +105,7 @@ class PriceService extends Controller
                 $product['name'] = $name === 'og:title' ? $content : ($product['name'] ?? '');
                 $product['description'] = in_array($name,
                     ['og:description', 'twitter:description']) ? $content : ($product['description'] ?? '');
-                $product['url'] = $name === 'og:url' ? $content : ($product['url'] ?? '');
+                $product['link'] = $name === 'og:url' ? $content : ($product['link'] ?? '');
                 $product['image'] = in_array($name,
                     ['og:image', 'twitter:image', 'og:image:secure_url']) ? $content : ($product['image'] ?? '');
                 $product['price'] = in_array($name, [
@@ -113,7 +113,7 @@ class PriceService extends Controller
                 ]) ? $this->extractFirstInt($content) : ($product['price'] ?? '');
             }
 
-            $product['url'] = $this->url;
+            $product['link'] = $this->url;
 
             return array_filter($product);
         } catch (Exception $e) {

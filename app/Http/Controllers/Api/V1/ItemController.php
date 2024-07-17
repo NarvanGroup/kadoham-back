@@ -23,7 +23,7 @@ class ItemController extends Controller
 
     public function index(): JsonResponse
     {
-        return $this->responseIndex(ItemResource::collection(auth()->user()->items()->with(['wishList', 'buyer'])->get()));
+        return $this->responseIndex(ItemResource::collection(auth()->user()->items()->with(['wishList', 'buyers'])->get()));
     }
 
     public function store(StoreItemRequest $request): JsonResponse
@@ -36,7 +36,7 @@ class ItemController extends Controller
     public function show(Item $item): JsonResponse
     {
         $this->authorize('show', $item);
-        return $this->responseShow(new ItemResource($item->load('wishList', 'buyer')));
+        return $this->responseShow(new ItemResource($item->load('wishList', 'buyers')));
     }
 
     public function update(StoreItemRequest $request, Item $item): JsonResponse

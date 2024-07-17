@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Api\V1\Items;
 
 use App\Enums\ItemStatusEnum;
+use App\Models\Api\V1\Item;
+use App\Models\Api\V1\ItemBuyer;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -23,14 +25,14 @@ class CancelPurchaseItemRequest extends FormRequest
      */
     public function rules(): array
     {
+        $itemBuyer = ItemBuyer::findOrFail($this->item_buyer_id);
+        $item = $itemBuyer->item;
         return [
-            'item_id'   => [
+            'item_buyer_id'   => [
                 'required',
-                Rule::exists('item_buyers', 'item_id')->where(function ($query) {
-                    $query->where('user_id', $this->user()->id);
-                }),
-                Rule::exists('items', 'id')->where(static function ($query) {
-                    $query->where('status', ItemStatusEnum::COMPLETED);
+                Rule::exists('item_buyers', 'id')->where(function ($query) use ($item) {
+                    $query->where('user_id', $this->user()->id)
+                        ->orWhere('user_id', $item->user_id);
                 })
             ]
         ];
