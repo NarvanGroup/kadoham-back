@@ -17,7 +17,7 @@ return new class extends Migration
             $table->enum('type',['product','cash','experience','diy','charity'])->default('product')->index();
             $table->unsignedDecimal('price',11,0)->nullable();
             $table->longText('link')->nullable();
-            $table->unsignedBigInteger('quantity')->default(1);
+            $table->unsignedBigInteger('quantity')->nullable();
             $table->string('image',4096)->nullable();
             $table->string('where_to_buy')->nullable();
             $table->unsignedInteger('rate')->nullable();
