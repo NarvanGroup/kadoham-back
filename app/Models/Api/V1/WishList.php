@@ -3,6 +3,7 @@
 namespace App\Models\Api\V1;
 
 use App\Enums\ItemStatusEnum;
+use App\Helper\UniqueCodeGenerator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -15,6 +16,17 @@ class WishList extends Model
     use HasFactory, HasUuids, SoftDeletes;
 
     protected $guarded = [];
+
+    // Use the created event to created share link
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(static function ($wishList) {
+            $code = UniqueCodeGenerator::generateUniqueCode(new self(), 'share');
+            $wishList->update(['share' => $code]);
+        });
+    }
 
     /**
      * Scope a query to only include popular users.
