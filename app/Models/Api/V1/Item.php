@@ -14,6 +14,9 @@ class Item extends Model
     use HasFactory, HasUuids, SoftDeletes;
 
     protected $guarded = [];
+    protected $casts = [
+        'category' => 'json'
+    ];
     public function wishList()
     {
         return $this->belongsTo(WishList::class,'wish_list_id');

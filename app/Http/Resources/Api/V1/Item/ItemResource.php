@@ -25,6 +25,7 @@ class ItemResource extends JsonResource
             'amount'         => $this->amount,
             'filled'         => $this->filled,
             'remaining'      => $this->remaining,
+            'category'       => $this->category,
             'link'           => $this->link,
             'image'          => UploadHelper::url($this->image),
             'rate'           => $this->rate,
