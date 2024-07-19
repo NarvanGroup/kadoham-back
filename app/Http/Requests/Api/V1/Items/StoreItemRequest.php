@@ -57,7 +57,10 @@ class StoreItemRequest extends FormRequest
             'where_to_buy' => ['nullable', 'string', 'max:255'],
             'rate' => ['nullable', 'numeric', 'min:0', 'max:5'],
             'description' => ['nullable', 'string', 'max:4096'],
-            'category' => ['nullable', 'json'],
+            'category' => [
+                Rule::excludeIf($this->type !== ItemTypeEnum::EXPERIENCE->value),
+                'json'
+            ],
             'amount' => [
                 Rule::excludeIf($this->type !== ItemTypeEnum::CHARITY->value && $this->type !== ItemTypeEnum::CASH->value),
                 'nullable',
