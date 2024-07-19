@@ -60,6 +60,7 @@ class StoreItemRequest extends FormRequest
             'category' => ['nullable', 'json'],
             'amount' => [
                 Rule::excludeIf($this->type !== ItemTypeEnum::CHARITY->value && $this->type !== ItemTypeEnum::CASH->value),
+                'nullable',
                 'numeric',
                 'min:1000',
                 'max_digits:11'
