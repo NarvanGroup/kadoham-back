@@ -16,6 +16,7 @@ class WishList extends Model
     use HasFactory, HasUuids, SoftDeletes;
 
     protected $guarded = [];
+    protected $casts = ['occasion_date' => 'datetime'];
 
     // Use the created event to created share link
     protected static function boot()
