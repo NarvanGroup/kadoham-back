@@ -20,16 +20,17 @@ class WishListResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'          => $this->id,
-            'name'        => $this->name,
-            'description' => $this->description,
-            'image'       => UploadHelper::url($this->image),
-            'share'       => $this->share,
-            'items'       => ItemResource::collection($this->whenLoaded('items')),
-            'visibility'  => $this->visibility,
-            'items_count' => $this->itemsCount,
-            'status'      => $this->status,
-            'progress'    => $this->progress
+            'id'            => $this->id,
+            'name'          => $this->name,
+            'description'   => $this->description,
+            'image'         => UploadHelper::url($this->image),
+            'share'         => $this->share,
+            'items'         => ItemResource::collection($this->whenLoaded('items')),
+            'occasion_date' => $this->occasion_date,
+            'visibility'    => $this->visibility,
+            'items_count'   => $this->itemsCount,
+            'status'        => $this->status,
+            'progress'      => $this->progress
         ];
     }
 }
