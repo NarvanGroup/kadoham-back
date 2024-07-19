@@ -31,7 +31,7 @@ class WishListController extends Controller
     public function show(WishList $wishList): JsonResponse
     {
         $this->authorize('show', $wishList);
-        return $this->responseShow(new WishListResource($wishList->load('items.buyer')));
+        return $this->responseShow(new WishListResource($wishList->load('items.buyers')));
     }
 
     public function update(StoreWishListRequest $request, WishList $wishList): JsonResponse
@@ -66,7 +66,7 @@ class WishListController extends Controller
         return $this->response(new UserSharedWishlistResource($wishList->user->load([
             'interests',
             'wishLists' => static function ($query) use ($share) {
-                $query->where('share', $share)->with('items.buyer');
+                $query->where('share', $share)->with('items.buyers');
             }
         ])));
     }

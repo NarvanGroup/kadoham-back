@@ -19,7 +19,7 @@ class Item extends Model
         return $this->belongsTo(WishList::class,'wish_list_id');
     }
 
-    public function buyer()
+    public function buyers()
     {
         return $this->hasMany(ItemBuyer::class);
     }
