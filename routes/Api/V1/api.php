@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\AuthenticationController;
 use App\Http\Controllers\Api\V1\CardController;
 use App\Http\Controllers\Api\V1\FilterController;
 use App\Http\Controllers\Api\V1\ItemController;
+use App\Http\Controllers\Api\V1\PartnershipController;
 use App\Http\Controllers\Api\V1\PriceController;
 use App\Http\Controllers\Api\V1\SocialMediaController;
 use App\Http\Controllers\Api\V1\ThankYouNoteController;
@@ -78,4 +79,6 @@ Route::get('/wish-lists/wishes/{share}', [WishListController::class, 'showShare'
 Route::post('/getPrice', [PriceController::class, 'getPrice']);
 
 Route::post('search', [UserController::class, 'search']);
+
+Route::post('partnership', [PartnershipController::class, 'store']);
 
