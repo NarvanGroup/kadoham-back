@@ -40,6 +40,7 @@ Route::middleware(['auth:sanctum', 'role.check'])->group(static function () {
     Route::controller(UserController::class)->group(static function () {
         Route::put('profile', 'update');
         Route::post('profile', 'profile');
+        Route::post('purchases', 'purchases');
         Route::post('logout', 'logout');
         Route::post('resetPassword', 'resetPassword');
     });

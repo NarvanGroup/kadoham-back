@@ -21,7 +21,8 @@ class ItemBuyersResource extends JsonResource
             'buyer'             => $this->is_public ? UserSharedWishlistResource::make($this->user) : 'private',
             'buyers'            => $this->buyers,
             'is_public'         => $this->is_public,
-            'content'           => $this->content
+            'content'           => $this->content,
+            'item'              => ItemResource::make($this->whenLoaded('item'))
         ];
     }
 }

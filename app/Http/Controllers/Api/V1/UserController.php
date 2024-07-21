@@ -107,4 +107,9 @@ class UserController extends Controller
 
         return UserResource::collection($users);
     }
+
+    public function purchases(): JsonResponse
+    {
+        return $this->response(new UserResource(auth()->user()->load('itemBuyer.item.wishList')));
+    }
 }

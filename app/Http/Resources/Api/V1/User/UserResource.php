@@ -6,6 +6,7 @@ use App\Helper\UploadHelper;
 use App\Http\Resources\Api\V1\Address\AddressResource;
 use App\Http\Resources\Api\V1\Card\CardResource;
 use App\Http\Resources\Api\V1\Interest\InterestResource;
+use App\Http\Resources\Api\V1\Item\ItemBuyersResource;
 use App\Http\Resources\Api\V1\Item\ItemResource;
 use App\Http\Resources\Api\V1\SocialMedia\SocialMediaResource;
 use App\Http\Resources\Api\V1\Wallet\WalletResource;
@@ -44,6 +45,7 @@ class UserResource extends JsonResource
             'social_media' => SocialMediaResource::collection($this->whenLoaded('socialMedia')),
             'wish_lists' => WishListResource::collection($this->whenLoaded('wishLists')),
             'items' => ItemResource::collection($this->whenLoaded('items')),
+            'purchases' => ItemBuyersResource::collection($this->whenLoaded('itemBuyer')),
         ];
     }
 }
