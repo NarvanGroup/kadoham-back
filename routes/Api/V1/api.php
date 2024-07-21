@@ -71,14 +71,18 @@ Route::middleware(['auth:sanctum', 'role.check'])->group(static function () {
     Route::delete('/items/purchase', [ItemController::class, 'cancelPurchaseItem']);
     Route::apiResource('filters', FilterController::class);
     Route::apiResource('thank-you-notes', ThankYouNoteController::class);
-
+    Route::post('/getPrice', [PriceController::class, 'getPrice']);
 });
 
-Route::get('/wish-lists/wishes/{share}', [WishListController::class, 'showShare']);
+Route::middleware(['web', 'throttle:search'])->group(function () {
+    Route::post('search', [UserController::class, 'search']);
+    Route::get('/wish-lists/wishes/{share}', [WishListController::class, 'showShare']);
+});
 
-Route::post('/getPrice', [PriceController::class, 'getPrice']);
+Route::middleware(['web', 'throttle:partnership'])->group(function () {
+    Route::post('partnership', [PartnershipController::class, 'store']);
+});
 
-Route::post('search', [UserController::class, 'search']);
 
-Route::post('partnership', [PartnershipController::class, 'store']);
+
 
