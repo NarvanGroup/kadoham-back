@@ -5,10 +5,7 @@ namespace App\Models\Api\V1;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\AuthenticationEnum;
 use Bavix\Wallet\Interfaces\Wallet;
-use Bavix\Wallet\Interfaces\WalletFloat;
 use Bavix\Wallet\Traits\HasWallet;
-use Bavix\Wallet\Traits\HasWalletFloat;
-use Bavix\Wallet\Traits\HasWallets;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,21 +18,11 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements Wallet, WalletFloat
+class User extends Authenticatable implements Wallet
 {
-    use HasApiTokens, HasFactory, Notifiable, HasUuids, HasWalletFloat, HasRoles, HasWallets,HasWallet, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, HasUuids, HasRoles, HasWallet, SoftDeletes;
 
     protected $guard_name = 'web';
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::created(static function (self $user) {
-            $user->assignRole(Role::findByName('User'));
-        });
-    }
-
     /**
      * The attributes that are mass assignable.
      *
@@ -55,7 +42,6 @@ class User extends Authenticatable implements Wallet, WalletFloat
         'image',
         'otp'
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -67,16 +53,24 @@ class User extends Authenticatable implements Wallet, WalletFloat
         'password',
         'remember_token',
     ];
-
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
     protected $casts = [
-        'dob' => 'date',
+        'dob'               => 'date',
         'email_verified_at' => 'datetime',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(static function (self $user) {
+            $user->assignRole(Role::findByName('User'));
+        });
+    }
 
     public function scopeSearch($query, $searchTerm)
     {
@@ -158,6 +152,19 @@ class User extends Authenticatable implements Wallet, WalletFloat
         return $this->hasMany(ItemBuyer::class);
     }
 
+    public function authenticationStatus(): string
+    {
+        if ($this->hasPendingAuthentication()) {
+            return AuthenticationEnum::PENDING->value;
+        }
+
+        if ($this->isAuthenticated()) {
+            return AuthenticationEnum::ACTIVE->value;
+        }
+
+        return AuthenticationEnum::INACTIVE->value;
+    }
+
     /**
      * @return bool
      */
@@ -174,26 +181,13 @@ class User extends Authenticatable implements Wallet, WalletFloat
         return $this->hasOne(Authentication::class)->where('status', AuthenticationEnum::ACTIVE)->exists();
     }
 
-    public function authenticationStatus(): string
-    {
-        if ($this->hasPendingAuthentication()) {
-            return AuthenticationEnum::PENDING->value;
-        }
-
-        if ($this->isAuthenticated()) {
-            return AuthenticationEnum::ACTIVE->value;
-        }
-
-        return AuthenticationEnum::INACTIVE->value;
-    }
-
     /**
      * Get the user's first name.
      */
     protected function fullName(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->first_name . ' ' . $this->last_name,
+            get: fn() => $this->first_name.' '.$this->last_name,
         );
     }
 }

@@ -15,7 +15,7 @@ use RuntimeException;
 class PurchaseHelper
 {
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
      */
     public static function purchase(Request $request): ItemBuyer
@@ -24,35 +24,13 @@ class PurchaseHelper
             DB::beginTransaction();
             $item = Item::findOrFail($request->item_id);
             self::checkProductAvailability($item);
-            $itemBuyer = self::purchaseItem($request, $item);
+            $itemBuyer = self::purchaseItem($request);
+            self::proccesWalletTransaction($itemBuyer, $item->fresh());
             self::processItemCompletion($item->fresh());
             self::processWishListCompletion($item->fresh());
 
             DB::commit();
             return $itemBuyer->fresh();
-        } catch (Exception $exception) {
-            DB::rollback();
-            throw new RuntimeException($exception->getMessage());
-        }
-    }
-
-    /**
-     * @param Request $request
-     * @return ItemBuyer
-     */
-    public static function cancelPurchase(Request $request): ItemBuyer
-    {
-        try {
-            DB::beginTransaction();
-            $data = $request->validated();
-            $itemBuyer = auth()->user()->itemBuyer()->where('id', $data['item_buyer_id'])->first();
-            $item = $itemBuyer->item;
-            $itemBuyer->delete();
-            self::processItemCompletion($item->fresh());
-            self::processWishListCompletion($item->fresh());
-            DB::commit();
-            return $itemBuyer->fresh();
-
         } catch (Exception $exception) {
             DB::rollback();
             throw new RuntimeException($exception->getMessage());
@@ -68,9 +46,23 @@ class PurchaseHelper
         $isProduct = $item->type === ItemTypeEnum::PRODUCT->value;
         $isCashOrCharity = in_array($item->type, [ItemTypeEnum::CASH->value, ItemTypeEnum::CHARITY->value], true);
 
-        if (($isProduct && $item->filled >= $item->quantity) || ($isCashOrCharity && $item->filled >= $item->amount)) {
+        if (($isProduct && $item->filled >= $item->quantity) || (($isCashOrCharity && $item->amount !== null) && $item->filled >= $item->amount)) {
             throw new RuntimeException('Item already purchased!');
         }
+    }
+
+    private static function purchaseItem(Request $request)
+    {
+        return auth()->user()->itemBuyer()->create($request->validated());
+    }
+
+    private static function proccesWalletTransaction(ItemBuyer $itemBuyer, Item $item)
+    {
+        if ($item->type === ItemTypeEnum::PRODUCT->value) {
+            return;
+        }
+
+        $item->user->deposit($itemBuyer->amount, $itemBuyer->toArray());
     }
 
     private static function processItemCompletion(Item $item)
@@ -88,7 +80,7 @@ class PurchaseHelper
 
             case ItemTypeEnum::CASH->value:
             case ItemTypeEnum::CHARITY->value:
-                $isCompleted = $item->filled >= $item->amount;
+                $isCompleted = $item->amount !== null && $item->filled >= $item->amount;
                 break;
 
             default:
@@ -111,8 +103,37 @@ class PurchaseHelper
         }
     }
 
-    private static function purchaseItem(Request $request,Item $item)
+    /**
+     * @param  Request  $request
+     * @return ItemBuyer
+     */
+    public static function cancelPurchase(Request $request): ItemBuyer
     {
-        return auth()->user()->itemBuyer()->create($request->validated());
+
+        try {
+            DB::beginTransaction();
+            $data = $request->validated();
+            $itemBuyer = auth()->user()->itemBuyer()->where('id', $data['item_buyer_id'])->first();
+            $item = $itemBuyer->item;
+            self::checkItemType($item);
+            $itemBuyer->delete();
+            self::processItemCompletion($item->fresh());
+            self::processWishListCompletion($item->fresh());
+            DB::commit();
+            return $itemBuyer->fresh();
+
+        } catch (Exception $exception) {
+            DB::rollback();
+            throw new RuntimeException($exception->getMessage());
+        }
+    }
+
+    private static function checkItemType(Item $item)
+    {
+        $isCashOrCharity = in_array($item->type, [ItemTypeEnum::CASH->value, ItemTypeEnum::CHARITY->value], true);
+
+        if ($isCashOrCharity) {
+            throw new RuntimeException("Cash or Charity purchases can't be canceled!");
+        }
     }
 }

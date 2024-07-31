@@ -183,7 +183,7 @@ return [
         'table' => 'wallets',
         'model' => Wallet::class,
         'creating' => [
-            'decimal_places' => 18,
+            'decimal_places' => 0,
         ],
         'default' => [
             'name' => 'کیف پول تومانی',

@@ -19,6 +19,7 @@ class ThankYouNoteResource extends JsonResource
             'type'    => $this->type,
             'subject' => $this->subject,
             'content' => $this->content,
+            'file'    => $this->file
         ];
     }
 }

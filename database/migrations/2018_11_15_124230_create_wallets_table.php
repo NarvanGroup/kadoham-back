@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Schema;
 return new class() extends Migration {
     public function up(): void
     {
-        Schema::create($this->table(), function (Blueprint $table) {
-	        $table->uuid('id')->primary();
-            $table->uuidMorphs('holder');
+        Schema::create($this->table(), static function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->morphs('holder');
             $table->string('name');
             $table->string('slug')
                 ->index()
@@ -53,7 +53,7 @@ return new class() extends Migration {
         Schema::drop($this->table());
     }
 
-    protected function table(): string
+    private function table(): string
     {
         return (new Wallet())->getTable();
     }

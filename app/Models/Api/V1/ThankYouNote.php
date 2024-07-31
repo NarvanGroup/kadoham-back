@@ -13,7 +13,8 @@ class ThankYouNote extends Model
     protected $fillable = [
         'type',
         'subject',
-        'content'
+        'content',
+        'file'
     ];
 
     public function user()

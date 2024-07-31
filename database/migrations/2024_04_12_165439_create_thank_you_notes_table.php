@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('thank_you_notes', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->index();
-            $table->enum('type', ['text', 'video', 'voice'])->default('text');
+            $table->enum('type', ['text', 'video', 'voice', 'image'])->default('text');
             $table->string('subject');
             $table->longText('content');
+            $table->string('file')->nullable();
             $table->timestamps();
         });
     }

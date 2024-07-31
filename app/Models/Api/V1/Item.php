@@ -17,6 +17,12 @@ class Item extends Model
     protected $casts = [
         'category' => 'json'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
+
     public function wishList()
     {
         return $this->belongsTo(WishList::class,'wish_list_id');
@@ -37,7 +43,15 @@ class Item extends Model
     protected function remaining(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->type === ItemTypeEnum::PRODUCT->value ? ($this->quantity - $this->filled) : ($this->amount - $this->filled)
+            get: function () {
+                if ($this->type === ItemTypeEnum::PRODUCT->value) {
+                    return $this->quantity - $this->filled;
+                }
+                if($this->amount !== null){
+                    return $this->amount - $this->filled;
+                }
+                return null;
+            }
         );
     }
 }

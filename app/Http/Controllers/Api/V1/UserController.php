@@ -60,7 +60,7 @@ class UserController extends Controller
 
     public function profile(): JsonResponse
     {
-        return $this->response(new UserResource(auth()->user()->load('interests', 'addresses', 'cards', 'wallets', 'socialMedia','itemBuyer')));
+        return $this->response(new UserResource(auth()->user()->load('interests', 'addresses', 'cards', 'socialMedia','itemBuyer','wallet')));
     }
 
     public function logout(): JsonResponse

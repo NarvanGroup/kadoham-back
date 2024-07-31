@@ -6,7 +6,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "bavix/laravel-wallet": "*",
+        "bavix/laravel-wallet": "^10.1",
+        "bavix/laravel-wallet-uuid": "^2.0",
         "egulias/email-validator": "^4.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",

@@ -48,7 +48,7 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('otp', function (Request $request) {
-            return Limit::perMinute(1)->by($request->user()?->id ?: $request->ip());
+            return Limit::perMinute(3)->by($request->user()?->id ?: $request->ip());
         });
 
         RateLimiter::for('search', function (Request $request) {

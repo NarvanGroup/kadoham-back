@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\Schema;
 return new class() extends Migration {
     public function up(): void
     {
-        Schema::create($this->table(), function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuidMorphs('payable');
-            $table->foreignUuid('wallet_id');
+        Schema::create($this->table(), static function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->morphs('payable');
+            $table->unsignedBigInteger('wallet_id');
             $table->enum('type', ['deposit', 'withdraw'])->index();
             $table->decimal('amount', 64, 0);
             $table->boolean('confirmed');
