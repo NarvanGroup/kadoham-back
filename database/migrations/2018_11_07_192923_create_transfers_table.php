@@ -13,8 +13,8 @@ return new class() extends Migration {
     {
         Schema::create($this->table(), function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->morphs('from');
-            $table->morphs('to');
+            $table->uuidMorphs('from');
+            $table->uuidMorphs('to');
             $table
                 ->enum('status', ['exchange', 'transfer', 'paid', 'refund', 'gift'])
                 ->default('transfer')
