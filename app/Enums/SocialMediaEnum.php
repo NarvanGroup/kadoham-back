@@ -15,4 +15,12 @@ enum SocialMediaEnum: string
     case WEBSITE = 'وب سایت شخصی';
     case DISCORD = 'دیسکورد';
     case SKYPE = 'اسکایپ';
+    case FACEBOOK = 'فیس بوک';
+    case WHATSAPP = 'واتس اپ';
+    case SPOTIFY = 'اسپاتیفای';
+    case PINTEREST = 'پینترست';
+    case GITHUB = 'گیت هاب';
+    case YOUTUBE = 'یوتیوب';
+    case CASTBOX = 'کست باکس';
+
 }
