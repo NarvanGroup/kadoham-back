@@ -60,7 +60,7 @@ Route::middleware(['auth:sanctum', 'role.check'])->group(static function () {
     Route::apiResource('addresses', AddressController::class);
 
     //Cards route resources
-    Route::apiResource('cards', CardController::class);
+    Route::apiResource('cards', CardController::class)->except('update');
 
     Route::apiResource('wish-lists', WishListController::class);
     Route::post('/wish-lists/share/{wish_list}', [WishListController::class, 'storeShare']);

@@ -5,6 +5,7 @@ namespace App\Helper;
 use App\Enums\ItemStatusEnum;
 use App\Enums\ItemTypeEnum;
 use App\Enums\WishlistStatusEnum;
+use App\Http\Resources\Api\V1\Item\ItemBuyersResource;
 use App\Models\Api\V1\Item;
 use App\Models\Api\V1\ItemBuyer;
 use Illuminate\Http\Request;
@@ -62,7 +63,7 @@ class PurchaseHelper
             return;
         }
 
-        $item->user->deposit($itemBuyer->amount, $itemBuyer->toArray());
+        $item->user->deposit($itemBuyer->amount, ItemBuyersResource::make($itemBuyer->load(['user','item']))->jsonSerialize());
     }
 
     private static function processItemCompletion(Item $item)

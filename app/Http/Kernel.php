@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\PreventMultipleLogins;
 use App\Http\Middleware\RoleCheck;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Shetabit\Visitor\Middlewares\LogVisits;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
@@ -47,6 +48,7 @@ class Kernel extends HttpKernel
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            //LogVisits::class
         ],
     ];
 
@@ -73,6 +75,6 @@ class Kernel extends HttpKernel
         'permission' => PermissionMiddleware::class,
         'role_or_permission' => RoleOrPermissionMiddleware::class,
         'role.check' => RoleCheck::class,
-        'prevent.multiple.logins' => PreventMultipleLogins::class,
+        'prevent.multiple.logins' => PreventMultipleLogins::class
     ];
 }

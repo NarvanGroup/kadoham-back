@@ -13,9 +13,12 @@ return new class extends Migration {
         Schema::create('cards', function (Blueprint $table) {
 	        $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained();
-            $table->string('bank_name', 255);
+            $table->string('bank_name', 255)->nullable();
+            $table->string('account_number', 255)->nullable();
             $table->string('card_number', 16)->nullable();
             $table->string('iban', 26)->nullable();
+            $table->string('owner', 255)->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

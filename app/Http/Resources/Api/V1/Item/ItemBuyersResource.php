@@ -22,6 +22,10 @@ class ItemBuyersResource extends JsonResource
             'buyers'            => $this->buyers,
             'is_public'         => $this->is_public,
             'content'           => $this->content,
+            'quantity'          => $this->quantity,
+            'amount'            => $this->amount,
+            'created_at'        => $this->created_at,
+            'updated_at'        => $this->updated_at,
             'item'              => ItemResource::make($this->whenLoaded('item'))
         ];
     }

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('nid', 10)->unique()->nullable();
             $table->date('dob')->nullable();
             $table->enum('gender', ['male', 'female', 'gay', 'lesbian'])->nullable();
-            $table->string('mobile')->unique();
+            $table->string('mobile')->unique()->nullable();
             $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();

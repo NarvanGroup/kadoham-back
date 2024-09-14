@@ -3,6 +3,7 @@
 namespace App\Services\Api\V1;
 
 use App\Http\Controllers\Controller;
+use Http;
 
 // Bank codes and names
 const BANKS_CARD_CODES = [
@@ -85,10 +86,10 @@ class BankService extends Controller
     /**
      * Returns bank name of given card number
      *
-     * @param  string  $cardNumber
+     * @param  int  $cardNumber
      * @return null|string
      */
-    public function findBankNameByCard(string $cardNumber): ?string
+    public static function findBankNameByCard(int $cardNumber): ?string
     {
         return BANKS_CARD_CODES[substr($cardNumber, 0, 6)] ?? null;
     }
@@ -99,8 +100,18 @@ class BankService extends Controller
      * @param  string  $ibanNumber
      * @return null|string
      */
-    public function findBankNameByIban(string $ibanNumber): ?string
+    public static function findBankNameByIban(string $ibanNumber): ?string
     {
         return BANKS_IBAN_CODES[substr(preg_replace('/\D/', '', $ibanNumber), 2, 3)] ?? null;
     }
+
+    public static function getShebaJibit(int $cardNumber): array
+    {
+        $response = Http::asJson()->acceptJson()->withHeaders([
+            'authorization' => config('services.jibit-token'),
+        ])->get("https://napi.jibit.ir/merchant/v1/cards/{$cardNumber}/iban");
+
+        return $response->json();
+    }
+
 }

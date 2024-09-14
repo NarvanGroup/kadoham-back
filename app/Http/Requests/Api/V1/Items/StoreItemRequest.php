@@ -45,14 +45,14 @@ class StoreItemRequest extends FormRequest
                 Rule::excludeIf($this->type !== ItemTypeEnum::PRODUCT->value),
                 'numeric',
                 'min:1000',
-                'max_digits:11'
+                'max_digits:9'
             ],
             'link' => ['nullable', 'string', 'max:2048'],
             'quantity' => [
                 Rule::excludeIf($this->type !== ItemTypeEnum::PRODUCT->value),
                 'numeric',
                 'min:1',
-                'max_digits:3'
+                'max_digits:6'
             ],
             'where_to_buy' => ['nullable', 'string', 'max:255'],
             'rate' => ['nullable', 'numeric', 'min:0', 'max:5'],
@@ -66,7 +66,7 @@ class StoreItemRequest extends FormRequest
                 'nullable',
                 'numeric',
                 'min:1000',
-                'max_digits:11'
+                'max_digits:9'
             ],
             'charity' => ['nullable', 'json'],
             'visibility' => ['nullable', 'string', Rule::in(VisibilityEnum::cases())],

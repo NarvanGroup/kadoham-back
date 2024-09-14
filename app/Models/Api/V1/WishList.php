@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Shetabit\Visitor\Traits\Visitable;
 
 class WishList extends Model
 {
-    use HasFactory, HasUuids, SoftDeletes;
+    use HasFactory, HasUuids, SoftDeletes, Visitable;
 
     protected $guarded = [];
     protected $casts = ['occasion_date' => 'datetime'];

@@ -43,16 +43,16 @@ class PurchaseItemRequest extends FormRequest
         if (!$isQuantityRequired) {
             return ['nullable', 'numeric'];
         }
-        
-        return ['required', 'numeric', 'lte:' . $this->item->remaining];
+
+        return ['required', 'numeric','min:1', 'max_digits:6', 'lte:' . $this->item->remaining];
     }
 
     private function getAmountRules(bool $isAmountRequired): array
     {
         if (!$isAmountRequired || $this->item->amount === null) {
-            return ['nullable', 'numeric', 'min: 1000'];
+            return ['nullable', 'numeric', 'min: 1000', 'max_digits:9'];
         }
 
-        return ['required', 'numeric', 'min: 1000', 'lte:' . $this->item->remaining];
+        return ['required', 'numeric', 'min: 1000', 'max_digits:9', 'lte:' . $this->item->remaining];
     }
 }

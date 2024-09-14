@@ -100,8 +100,9 @@ class UserController extends Controller
         $users = User::search($search)->orWhereHas('wishLists', function ($query) use ($search) {
                 $query->public()->search($search);
             })
+            ->with(['socialMedia'])
             ->get()
-            ->load(['wishLists' => function ($query) {
+            ->load(['socialMedia', 'wishLists' => function ($query) {
                 $query->public();
             }]);
 

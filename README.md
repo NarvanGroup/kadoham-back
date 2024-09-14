@@ -72,3 +72,5 @@ php artisan storage:link
 php artisan db:seed
 
 php artisan iran:import
+
+php artisan make:filament-user

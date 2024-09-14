@@ -35,7 +35,7 @@ class StoreWishListRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('wish_lists')->where('user_id', auth()->user()->id)->ignore($ignoreName, 'name')
+                Rule::unique('wish_lists')->where('user_id', auth()->user()->id)
             ],
             'visibility'   => ['nullable', 'string', Rule::in(VisibilityEnum::cases())],
             'description' => ['nullable', 'string', 'max:4096'],

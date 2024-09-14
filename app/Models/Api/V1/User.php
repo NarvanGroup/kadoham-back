@@ -6,6 +6,9 @@ namespace App\Models\Api\V1;
 use App\Enums\AuthenticationEnum;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,13 +17,16 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
 use Laravel\Sanctum\HasApiTokens;
+use Shetabit\Visitor\Traits\Visitable;
+use Shetabit\Visitor\Traits\Visitor;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements Wallet
+class User extends Authenticatable implements Wallet, HasName
 {
-    use HasApiTokens, HasFactory, Notifiable, HasUuids, HasRoles, HasWallet, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, HasUuids, HasRoles, HasWallet, SoftDeletes, Visitor, Visitable;
 
     protected $guard_name = 'web';
     /**
@@ -70,6 +76,19 @@ class User extends Authenticatable implements Wallet
         static::created(static function (self $user) {
             $user->assignRole(Role::findByName('User'));
         });
+    }
+
+    /**
+     * Route notifications for the Sms channel.
+     */
+    public function routeNotificationForSms()
+    {
+        return $this->mobile;
+    }
+
+    public function getFilamentName(): string
+    {
+        return "{$this->first_name} {$this->last_name}" ?? 'ادمین';
     }
 
     public function scopeSearch($query, $searchTerm)

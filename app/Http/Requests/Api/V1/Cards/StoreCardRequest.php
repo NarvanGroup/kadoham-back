@@ -22,15 +22,20 @@ class StoreCardRequest extends FormRequest
      */
     public function rules(): array
     {
+        $ignore = null;
+
+        if ($this->isMethod('PUT')) {
+            $ignore = $this->card_number;
+        }
+
         return [
-            'user_id' => ['required', 'string', 'exists:users,id'],
-            'card_number' => ['nullable', 'ir_bank_card_number', Rule::unique('cards')->where(function ($query) {
-                return $query->where('user_id', $this->user()->id);
-            })],
-            'iban' => ['nullable', 'ir_sheba', Rule::unique('cards')->where(function ($query) {
-                return $query->where('user_id', $this->user()->id);
-            })],
-            'card_number_or_iban' => 'required_without_all:card_number,iban'
+            'card_number' => [
+                'required',
+                'ir_bank_card_number',
+                Rule::unique('cards')->where(function ($query) {
+                    return $query->where('user_id', $this->user()->id);
+                })->ignore($ignore, 'card_number')
+            ]
         ];
     }
 }
