@@ -23,6 +23,10 @@ use App\Http\Controllers\Api\V1\WishListController;
 |
 */
 
+Route::get('/test',[AddressController::class,'index']);
+
+Route::get('/payment/redirect',[AddressController::class,'verify']);
+
 Route::controller(AuthenticationController::class)->group(static function () {
     Route::post('loginOtp', 'loginOtp')->middleware(['prevent.multiple.logins']);
     Route::post('loginPassword', 'loginPassword')->middleware(['prevent.multiple.logins']);

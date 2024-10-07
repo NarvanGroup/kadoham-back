@@ -11,7 +11,6 @@ use App\Http\Requests\Api\V1\User\UpdateProfileRequest;
 use App\Http\Resources\Api\V1\User\UserResource;
 use App\Models\Api\V1\User;
 use App\Repositories\Api\V1\User\UserRepository;
-use App\Services\Api\V1\BankService;
 use App\Traits\Api\V1\ResponderTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -23,8 +22,7 @@ class UserController extends Controller
     use ResponderTrait;
 
     public function __construct(
-        private readonly UserRepository $userRepository,
-        private readonly BankService $bankService,
+        private readonly UserRepository $userRepository
     ) {
     }
 

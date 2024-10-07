@@ -4,7 +4,6 @@ namespace App\Models\Api\V1;
 
 use App\Jobs\GetCardBankJob;
 use App\Jobs\GetCardInformationJob;
-use App\Services\Api\V1\BankService;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

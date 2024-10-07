@@ -3,13 +3,14 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Modules\Sms\App\Channels\KavenegarSmsChannel;
+use Modules\Sms\App\Traits\MessageFormaterTrait;
 
 class WelcomeNotification extends Notification
 {
-    use Queueable;
+    use Queueable, MessageFormaterTrait;
 
     /**
      * Create a new notification instance.
@@ -26,7 +27,19 @@ class WelcomeNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return [KavenegarSmsChannel::class];
+    }
+
+    /**
+     * Get the SMS representation of the notification.
+     */
+    public function toSms(object $notifiable): string
+    {
+        return $this->line("عزیزدل من چطوره؟")
+            ->line("نشناختی؟")
+            ->line("سرورتم ;)")
+            ->line("دارم خطوط خدماتیمونو تست میکنم عزیزم ❤️")
+            ->cancel();
     }
 
     /**
@@ -34,10 +47,8 @@ class WelcomeNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+        return (new MailMessage)->line('The introduction to the notification.')->action('Notification Action',
+            url('/'))->line('Thank you for using our application!');
     }
 
     /**
@@ -47,8 +58,7 @@ class WelcomeNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
-        return [
-            //
+        return [//
         ];
     }
 }

@@ -3,13 +3,13 @@
 namespace App\Jobs;
 
 use App\Models\Api\V1\Card;
-use App\Services\Api\V1\BankService;
-use DB;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Modules\Inquiry\App\Services\Bank\BankService;
+
 
 class GetCardBankJob implements ShouldQueue
 {

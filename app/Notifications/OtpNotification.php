@@ -2,11 +2,9 @@
 
 namespace App\Notifications;
 
-use App\Channels\KavenegarOtpSmsChannel;
-use App\Channels\SmsIrOtpSmsChannel;
-use App\Channels\SmsIrSmsChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use Modules\Sms\App\Channels\KavenegarOtpSmsChannel;
 
 class OtpNotification extends Notification
 {
@@ -29,7 +27,7 @@ class OtpNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return [SmsIrOtpSmsChannel::class];
+        return [KavenegarOtpSmsChannel::class];
     }
 
     /**
@@ -38,7 +36,7 @@ class OtpNotification extends Notification
     public function toSms(object $notifiable): array
     {
         return [
-            'template' => '100000',
+            'template' => 'kadoham-otp',
             'token'    => $this->token
         ];
     }

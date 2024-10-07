@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Cards\StoreCardRequest;
 use App\Http\Resources\Api\V1\Card\CardResource;
 use App\Models\Api\V1\Card;
-use App\Services\Api\V1\BankService;
 use App\Traits\Api\V1\ResponderTrait;
 use Illuminate\Http\JsonResponse;
 

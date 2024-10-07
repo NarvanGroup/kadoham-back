@@ -13,7 +13,8 @@ class CardResource extends JsonResource
             'bank_name'      => $this->bank_name,
             'card_number'    => $this->card_number,
             'account_number' => $this->account_number,
-            'iban'           => $this->iban
+            'iban'           => $this->iban,
+            'owner'          => $this->owner
         ];
     }
 }

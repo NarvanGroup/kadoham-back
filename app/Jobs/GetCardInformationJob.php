@@ -3,13 +3,13 @@
 namespace App\Jobs;
 
 use App\Models\Api\V1\Card;
-use App\Services\Api\V1\BankService;
 use DB;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Modules\Inquiry\App\Services\Shepa\ShepaService;
 
 class GetCardInformationJob implements ShouldQueue
 {
@@ -39,13 +39,13 @@ class GetCardInformationJob implements ShouldQueue
 
         // Use a transaction to ensure atomicity
         DB::transaction(static function () use ($card) {
-            $accountInfo = BankService::getShebaJibit($card->card_number);
+            $accountInfo = (new ShepaService())->convertCardToIban($card->card_number);
 
             // Set additional properties from account info
             $card->update([
-                'iban'           => $accountInfo['iban'],
-                'owner'          => $accountInfo['owners'][0],
-                'account_number' => $accountInfo['accountNumber'],
+                'iban'           => $accountInfo->iban,
+                'owner'          => $accountInfo->owners[0],
+                'account_number' => $accountInfo->accountNumber,
             ]);
         });
     }

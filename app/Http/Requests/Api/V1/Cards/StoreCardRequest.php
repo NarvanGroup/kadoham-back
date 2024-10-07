@@ -33,7 +33,7 @@ class StoreCardRequest extends FormRequest
                 'required',
                 'ir_bank_card_number',
                 Rule::unique('cards')->where(function ($query) {
-                    return $query->where('user_id', $this->user()->id);
+                    return $query->where('user_id', $this->user()->id)->where('deleted_at', null);
                 })->ignore($ignore, 'card_number')
             ]
         ];
