@@ -46,8 +46,7 @@ class UserResource extends JsonResource
             'social_media'  => SocialMediaResource::collection($this->whenLoaded('socialMedia')),
             'wish_lists'    => WishListResource::collection($this->whenLoaded('wishLists')),
             'items'         => ItemResource::collection($this->whenLoaded('items')),
-            'purchases'     => ItemBuyersResource::collection($this->whenLoaded('itemBuyer')),
-            'notifications' => NotificationResource::collection($this->whenLoaded('notifications')),
+            'purchases'     => ItemBuyersResource::collection($this->whenLoaded('itemBuyer'))
         ];
     }
 }
