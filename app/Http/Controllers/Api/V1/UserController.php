@@ -8,6 +8,7 @@ use App\Http\Requests\Api\V1\User\ResetPasswordRequest;
 use App\Http\Requests\Api\V1\User\SearchRequest;
 use App\Http\Requests\Api\V1\User\SyncInterestRequest;
 use App\Http\Requests\Api\V1\User\UpdateProfileRequest;
+use App\Http\Resources\Api\V1\Notification\NotificationResource;
 use App\Http\Resources\Api\V1\User\UserResource;
 use App\Models\Api\V1\User;
 use App\Repositories\Api\V1\User\UserRepository;
@@ -45,7 +46,7 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $user = auth()->user();
-        $data['image'] = UploadHelper::upload($request,'image','avatars');
+        $data['image'] = UploadHelper::upload($request, 'image', 'avatars');
         $user->update($data);
         return $this->responseUpdated(new UserResource($user->fresh()));
     }
@@ -58,7 +59,8 @@ class UserController extends Controller
 
     public function profile(): JsonResponse
     {
-        return $this->response(new UserResource(auth()->user()->load('interests', 'addresses', 'cards', 'socialMedia','itemBuyer','wallet')));
+        return $this->response(new UserResource(auth()->user()->load('interests', 'addresses', 'cards', 'socialMedia', 'itemBuyer', 'wallet',
+            'notifications')));
     }
 
     public function logout(): JsonResponse
@@ -96,13 +98,13 @@ class UserController extends Controller
         $search = $request->search;
 
         $users = User::search($search)->orWhereHas('wishLists', function ($query) use ($search) {
-                $query->public()->search($search);
-            })
-            ->with(['socialMedia'])
-            ->get()
-            ->load(['socialMedia', 'wishLists' => function ($query) {
-                $query->public();
-            }]);
+            $query->public()->search($search);
+        })->with(['socialMedia'])->get()->load([
+                'socialMedia',
+                'wishLists' => function ($query) {
+                    $query->public();
+                }
+            ]);
 
         return UserResource::collection($users);
     }
@@ -110,5 +112,38 @@ class UserController extends Controller
     public function purchases(): JsonResponse
     {
         return $this->response(new UserResource(auth()->user()->load('itemBuyer.item.wishList')));
+    }
+
+    public function notifications(): JsonResponse
+    {
+        return $this->response(NotificationResource::collection(auth()->user()->notifications));
+    }
+
+    public function unreadNotifications(): JsonResponse
+    {
+        return $this->response(NotificationResource::collection(auth()->user()->unreadNotifications));
+    }
+
+    public function markAsReadNotification(string $notificationId): JsonResponse
+    {
+        auth()->user()->notifications()->findOrFail($notificationId)->update(['read_at' => now()]);
+        return $this->responseSuccessful('عملیات با موفقیت انجام شد');
+    }
+
+    public function markAsUnreadNotification(string $notificationId): JsonResponse
+    {
+        auth()->user()->notifications()->findOrFail($notificationId)->update(['read_at' => null]);
+        return $this->responseSuccessful('عملیات با موفقیت انجام شد');
+    }
+
+    public function markAsReadAllNotifications(): JsonResponse
+    {
+        auth()->user()->unreadNotifications->markAsRead();
+        return $this->responseSuccessful('عملیات با موفقیت انجام شد');
+    }
+    public function markAsUnreadAllNotifications(): JsonResponse
+    {
+        auth()->user()->unreadNotifications->markAsUnread();
+        return $this->responseSuccessful('عملیات با موفقیت انجام شد');
     }
 }

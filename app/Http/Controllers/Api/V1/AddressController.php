@@ -29,7 +29,9 @@ class AddressController extends Controller
 
     public function index()
     {
-        $user = User::first();
+/*        $user = User::first();
+        $user->notify(new WelcomeNotification());
+        dd($user->notifications);
 
         $mobile = '09190755375';
 
@@ -42,7 +44,7 @@ class AddressController extends Controller
         return (new PaymentService())->pay($user, $amount, $orderId, $mobile, $card, $description);
 
         $jibit = new EhrazService();
-        dd($jibit->convertCardToIban(6274121199004409));
+        dd($jibit->convertCardToIban(6274121199004409));*/
         return $this->responseIndex(AddressResource::collection(auth()->user()->addresses()->get()));
     }
 

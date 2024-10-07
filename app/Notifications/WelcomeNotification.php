@@ -5,7 +5,6 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Modules\Sms\App\Channels\KavenegarSmsChannel;
 use Modules\Sms\App\Traits\MessageFormaterTrait;
 
 class WelcomeNotification extends Notification
@@ -27,7 +26,7 @@ class WelcomeNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return [KavenegarSmsChannel::class];
+        return ['database'];
     }
 
     /**
@@ -35,11 +34,7 @@ class WelcomeNotification extends Notification
      */
     public function toSms(object $notifiable): string
     {
-        return $this->line("عزیزدل من چطوره؟")
-            ->line("نشناختی؟")
-            ->line("سرورتم ;)")
-            ->line("دارم خطوط خدماتیمونو تست میکنم عزیزم ❤️")
-            ->cancel();
+        return $this->line("عزیزدل من چطوره؟")->line("نشناختی؟")->line("سرورتم ;)")->line("دارم خطوط خدماتیمونو تست میکنم عزیزم ❤️")->cancel();
     }
 
     /**
@@ -58,7 +53,9 @@ class WelcomeNotification extends Notification
      */
     public function toArray(object $notifiable): array
     {
-        return [//
+        return [
+            'message'    => 'شما با موفقیت وارد سایت شدید!',
+            'created_at' => now()
         ];
     }
 }

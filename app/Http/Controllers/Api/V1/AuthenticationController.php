@@ -12,6 +12,7 @@ use App\Http\Resources\Api\V1\User\UserResource;
 use App\Models\Api\V1\Authentication;
 use App\Models\Api\V1\Chart;
 use App\Models\Api\V1\User;
+use App\Notifications\WelcomeNotification;
 use App\Repositories\Api\V1\User\UserRepository;
 use App\Traits\Api\V1\ResponderTrait;
 use Carbon\Carbon;
@@ -40,6 +41,8 @@ class AuthenticationController extends Controller
         if (!$user || $user->otp === null || !Hash::check($request->otp, $user->otp)) {
             return $this->responseForbidden('Unauthorised.');
         }
+
+        $user->notify(new WelcomeNotification());
 
         $user->update(['otp' => null]);
 

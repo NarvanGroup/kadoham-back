@@ -23,9 +23,9 @@ use App\Http\Controllers\Api\V1\WishListController;
 |
 */
 
-Route::get('/test',[AddressController::class,'index']);
+Route::get('test',[AddressController::class,'index']);
 
-Route::get('/payment/redirect',[AddressController::class,'verify']);
+Route::get('payment/redirect',[AddressController::class,'verify']);
 
 Route::controller(AuthenticationController::class)->group(static function () {
     Route::post('loginOtp', 'loginOtp')->middleware(['prevent.multiple.logins']);
@@ -41,15 +41,20 @@ Route::middleware(['throttle:otp'])->group(function () {
 Route::middleware(['auth:sanctum', 'role.check'])->group(static function () {
     // Users route resources
     Route::post('users/authentication', [AuthenticationController::class, 'authentication']);
-    Route::controller(UserController::class)->group(static function () {
+    Route::controller(UserController::class)->prefix('users')->group(static function () {
         Route::put('profile', 'update');
         Route::post('profile', 'profile');
         Route::post('purchases', 'purchases');
         Route::post('logout', 'logout');
-        Route::post('resetPassword', 'resetPassword');
+        Route::get('notifications', 'notifications');
+        Route::get('unreadNotifications', 'unreadNotifications');
+        Route::post('markAsReadNotification/{NotificationId}', 'markAsReadNotification');
+        Route::post('markAsUnreadNotification/{NotificationId}', 'markAsUnreadNotification');
+        Route::post('markAsReadAllNotifications', 'markAsReadAllNotifications');
+        Route::post('markAsUnreadAllNotifications', 'markAsUnreadAllNotifications');
     });
 
-    Route::post('/users/interests', [UserController::class, 'syncInterests']);
+    Route::post('users/interests', [UserController::class, 'syncInterests']);
     Route::apiResource('users', UserController::class);
 
 
@@ -67,21 +72,21 @@ Route::middleware(['auth:sanctum', 'role.check'])->group(static function () {
     Route::apiResource('cards', CardController::class)->except('update');
 
     Route::apiResource('wish-lists', WishListController::class);
-    Route::post('/wish-lists/share/{wish_list}', [WishListController::class, 'storeShare']);
-    Route::delete('/wish-lists/share/{wish_list}', [WishListController::class, 'destroyShare']);
-    Route::post('/items/purchase', [ItemController::class, 'purchaseItem']);
-    Route::delete('/items/purchase', [ItemController::class, 'cancelPurchaseItem']);
+    Route::post('wish-lists/share/{wish_list}', [WishListController::class, 'storeShare']);
+    Route::delete('wish-lists/share/{wish_list}', [WishListController::class, 'destroyShare']);
+    Route::post('items/purchase', [ItemController::class, 'purchaseItem']);
+    Route::delete('items/purchase', [ItemController::class, 'cancelPurchaseItem']);
     Route::apiResource('items', ItemController::class);
-    Route::post('/items/purchase', [ItemController::class, 'purchaseItem']);
-    Route::delete('/items/purchase', [ItemController::class, 'cancelPurchaseItem']);
+    Route::post('items/purchase', [ItemController::class, 'purchaseItem']);
+    Route::delete('items/purchase', [ItemController::class, 'cancelPurchaseItem']);
     Route::apiResource('filters', FilterController::class);
     Route::apiResource('thank-you-notes', ThankYouNoteController::class);
-    Route::post('/getPrice', [PriceController::class, 'getPrice']);
+    Route::post('getPrice', [PriceController::class, 'getPrice']);
 });
 
 Route::middleware(['web', 'throttle:search'])->group(function () {
     Route::post('search', [UserController::class, 'search']);
-    Route::get('/wish-lists/wishes/{share}', [WishListController::class, 'showShare']);
+    Route::get('wish-lists/wishes/{share}', [WishListController::class, 'showShare']);
 });
 
 Route::middleware(['web', 'throttle:partnership'])->group(function () {
